@@ -1,6 +1,6 @@
-# MedMinder - Medicine Manager and Virus Prediction
+# MedMinder - Medicine Manager and Disease Prediction
 
-MedMinder is a comprehensive application designed to help users manage their medications and provide predictions based on user-reported symptoms. It combines two key features: a medicine management system and a virus prediction module.
+MedMinder is a comprehensive application designed to help users manage their medications and provide predictions based on user-reported symptoms. It combines two key features: a medicine management system and a disease prediction module.
 
 ## Medicine Management
 
