@@ -32,6 +32,16 @@ To use MedMinder, follow these steps:
 5. Review the predicted disease(s) provided by the web application.
 6. Customize notification preferences and settings according to your needs.
 
+## Running the Application Locally
+
+If you want to run the MedMinder application locally, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/playBit1/Medminder.git`
+2. Change to the project directory: `cd Medminder`
+3. Install dependencies: `npm install`
+4. Start the development server: `npm start`
+5. Open your web browser and navigate to `http://localhost:3000` to access the application.
+
 ## Support and Resources
 
 For more information, and support regarding MedMinder, please visit our official website at (TBA). You can also reach out to our support team at (TBA) for any inquiries or assistance.
