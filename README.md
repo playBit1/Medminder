@@ -36,11 +36,11 @@ To use MedMinder, follow these steps:
 
 If you want to run the MedMinder application locally, follow these steps:
 
-1. Clone the repository: `git clone https://github.com/playBit1/Medminder.git`
-2. Change to the project directory: `cd Medminder`
-3. Install dependencies: `npm install`
-4. Start the development server: `npm start`
-5. Open your web browser and navigate to `http://localhost:3000` to access the application.
+1. Clone the repository: ```bash git clone https://github.com/playBit1/Medminder.git```
+3. Change to the project directory: `cd Medminder`
+4. Install dependencies: `npm install`
+5. Start the development server: `npm start`
+6. Open your web browser and navigate to `http://localhost:3000` to access the application.
 
 ## Support and Resources
 
