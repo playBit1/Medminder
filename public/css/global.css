@@ -1,0 +1,19 @@
+.navbar-custom {
+    background-color: white; /* Set your desired background color */
+    mix-blend-mode: multiply;
+  }
+ 
+  .navbar-custom li a {
+    color: grey;  /* Set the text color (usually dark) */
+}
+
+.page-footer {
+    background-color: #4fc3f7 ; /* Light blue color */
+    color: #333; /* Set your desired text color */
+    padding: 20px 0; /* Add some padding for spacing */
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    
+}
