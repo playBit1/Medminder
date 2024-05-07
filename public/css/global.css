@@ -2,6 +2,10 @@
     background-color: white; /* Set your desired background color */
     mix-blend-mode: multiply;
   }
+
+  .custom-menu-icon {
+    color: #4fc3f7; /* Replace with your desired color */
+}
  
   .navbar-custom li a {
     color: grey;  /* Set the text color (usually dark) */
