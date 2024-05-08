@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medication Records</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+<style>
+  body {
+            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+        }
+        .container {
+            background: white;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			width: 100%;
+            overflow: hidden; /* Ensure the shadows don't get cut off */
+        }
+        .tabs .tab a {
+            color: #0d47a1; /* Deep blue color */
+        }
+        .tabs .tab a.active {
+            background-color: #e3f2fd; /* Light blue background for active tab */
+        }
+        .tabs .indicator {
+            background-color: #0d47a1; /* Deep blue for the active tab indicator */
+        }
+        th, td {
+            border-right: 1px solid #ddd; /* Adds a subtle border to the right of each cell */
+        }
+        th {
+            background-color: #f2f2f2; /* Light grey background for headers */
+            color: #000; /* Black color for text */
+        }
+        table {
+            border-collapse: separate; /* Ensures borders are spaced nicely */
+            border-spacing: 0 5px; /* Adds spacing between rows */
+        }
+        .btn, .btn-large {
+            background-color: #0d47a1; /* Deep blue background for buttons */
+            margin: 5px; /* Spacing around buttons */
+        }
+        .btn:hover, .btn-large:hover {
+            background-color: #1565c0; /* Slightly lighter blue on hover */
+        }
+</style>
+
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="blue lighten-1">
+        <div class="nav-wrapper">
+            <a id="logo-container" href="#" class="brand-logo">MedMinder</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/">Dashboard</a></li>
+                <li><a href="/medications/getPills">Med Manager</a></li>
+                <li><a href="#">Symptom Checker</a></li>
+            </ul>
+        </div>
+    </nav>
+ <div class="container">
+        <!-- User Profile -->
+        <div class="section">
+            <h5>User Profile</h5>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">John Doe</span>
+                    <p>Basic health data</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Medicine Schedule -->
+        <div class="section">
+            <h5>Medicine Schedule</h5>
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Today’s Schedule</span>
+                            <ul>
+                                <li>9 AM: Medication 1</li>
+                                <li>1 PM: Medication 2</li>
+                                <li>6 PM: Medication 3</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s12 m6">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">Weekly Overview</span>
+                            <ul>
+                                <li>Monday: 3 doses</li>
+                                <li>Tuesday: 2 doses</li>
+                                <li>Wednesday: 3 doses</li>
+                                <!-- Add more days as needed -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medication List -->
+        <div class="section">
+            <h5>Medication List</h5>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Active Medications</span>
+                    <ul>
+                        <li>Medication 1 - Dosage: 100mg, Frequency: Twice a day</li>
+                        <li>Medication 2 - Dosage: 50mg, Frequency: Once a day</li>
+                        <!-- Add more medications as needed -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reminders -->
+        <div class="section">
+            <h5>Reminders</h5>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Next Dose</span>
+                    <p>Medication 1 at 9:00 PM</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings -->
+        <div class="section">
+            <h5>Settings</h5>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Notification Settings</span>
+                    <p>Manage your notification preferences here.</p>
+                </div>
+            </div>
+        </div>
+		<div class="section">
+            <h5>Medication Schedule</h5>
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Calender</span>
+                    <p>Calender Should Desplay Here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
