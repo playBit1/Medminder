@@ -1,0 +1,24 @@
+.left-side {
+  padding-left: 20%;
+}
+
+.main-headings {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  padding-bottom: 30px;
+}
+
+.symptom-desc {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-size: 1.25rem;
+}
+
+.symptom-sub-title {
+  font-family: 'Montserrat', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  padding-bottom: 25px;
+}
