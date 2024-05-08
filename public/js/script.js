@@ -16,14 +16,14 @@ function downloadpdf() {
     doc.setFontSize(16);
     doc.text("Medication Records", 14, 15);
     
-    // Add text
+    // Add patient
     doc.setFontSize(12);
-    doc.text("Patient: John Doe", 14, 25); // Text position
+    doc.text("Patient: John Doe", 14, 25);
 
     doc.autoTable({
         html: '#table',
         startY: 35
-    })
+    });
 
-    doc.save('table.pdf')
+    doc.save('medication_records.pdf');
 }
