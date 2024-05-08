@@ -17,6 +17,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Routes
 const medManagerRoutes = require('./routes/medManagerRoutes');
+const { runDB } = require('./dbConnection');
 app.use('/medManager', medManagerRoutes);
 
-server.listen(3000, () => console.log('Server running on http://localhost:3000'));
+server.listen(3000, () =>{
+    runDB()
+    console.log('Server running on http://localhost:3000')
+});
