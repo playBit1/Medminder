@@ -12,6 +12,7 @@
     href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="/public/css/symptom_checker_styling.css" />
+  <link rel="stylesheet" href="/css/global.css">
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -19,6 +20,19 @@
   <title>MedMinder+</title>
 </head>
 <body>
+  <nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">MedMinder</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href='/medManager/page2'>Dashboard</a></li>
+            <li><a href='/medManager/page1'>Med Manger</a></li>
+            <li><a href='/medManager/page3'>Symptom Checker</a></li>
+            <li class="notification-bell">
+                <a href="notifications.html"><i class="material-icons">notifications_none</i></a>
+            </li>
+        </ul>
+    </div>
+  </nav>
   <main ">
   <div class="row" style="padding-top: 8%">
     <div class="col s6 left-side" style="padding: 0% 7% 0% 10%">
