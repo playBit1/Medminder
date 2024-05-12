@@ -4,6 +4,7 @@ const app = express();
 const server = require('http').createServer(app);
 const { runDB } = require('./dbConnection');
 
+
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
