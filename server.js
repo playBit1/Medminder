@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
 const cookieParser = require('cookie-parser');
+const { runDB } = require('./dbConnection');
 
 // Middleware
 app.use(express.json());
@@ -19,11 +20,13 @@ app.get('/', (req, res) => {
 
 // Routes
 const medManagerRoutes = require('./routes/medManagerRoutes');
-const { runDB } = require('./dbConnection');
+const symptomCheckerRoutes = require('./routes/symptom_checker_routes');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 
 app.use('/medManager', medManagerRoutes);
+
+app.use('/symptomChecker', symptomCheckerRoutes);
 
 app.use('/auth', authRoutes);
 
