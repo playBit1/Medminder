@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedMinder</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/global.css">
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">MedMinder</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href='/medManager/getPills'>Dashboard</a></li>
+                <li><a href='/medManager/page1'>Med Manger</a></li>
+                <li><a href='/medManager/page3'>Symptom Checker</a></li>
+                <li class="notification-bell">
+                    <a href="notifications.html"><i class="material-icons">notifications_none</i></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+     <!-- Profile section -->
+     <div class="profile-section">
+        <img src="/images/placeholder.png" alt="Profile Picture" class="profile-img">
+        <div class="profile-name">John Doe</div>
+        <div class="profile-details">
+        </div>
+        <a href="edit-profile.html">Edit Profile</a>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+              <div class="card-panel white lighten-3">
+                <h5>Your Medicine Schedule<i class="small material-icons">access_time</i></h5>
+                <div v-for="medication in medications" :key="medication.name">
+                  <div class="row">
+                    <div class="col s12">
+                      
+              <table class="highlight">
+                <thead>
+                    <tr>
+                        <th>Medication</th>
+                        <th>Dosage</th>
+                        <th>End Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% medications.forEach(medication => { %>
+                    <tr>
+                        <td><%= medication.name %></td>
+                        <td><%= medication.dosage %></td>
+                        <td><%= new Date(medication.endDate).toDateString() %></td>
+                        <td><%= medication.status %></td>
+                        <td>
+                            <button class="btn-small waves-effect blue modal-trigger" href="#medDetailsModal<%= medication._id %>" title="Details">
+                                <i class="large material-icons">description</i>
+                            </button>
+                            <button class="btn-small waves-effect blue">
+                                <i class="large material-icons">done</i>
+                            </button>
+                            <button class="btn-small waves-effect red">
+                                <i class="large material-icons">clear</i>
+                            </button>
+                            <!--<button class="btn-small waves-effect waves-light modal-trigger" href="#editMedModal<%= medication._id %>" title="Edit">
+                                <i class="material-icons">edit</i>
+                            </button>-->
+                            <!-- Details Modal Structure -->
+                            <div id="medDetailsModal<%= medication._id %>" class="modal">
+                                <div class="modal-content">
+                                    <h4><%= medication.name %> Details</h4>
+                                    <p><strong>Dosage:</strong> <%= medication.dosage %></p>
+                                    <p><strong>intervalHours:</strong> <%= medication.intervalHours %></p>
+                                    <p><strong>Start Date:</strong> <%= new Date(medication.startDate).toDateString() %></p>
+                                    <p><strong>End Date:</strong> <%= new Date(medication.endDate).toDateString() %></p>
+                                    <p><strong>Status:</strong> <%= medication.status %></p>
+                                    <div class="modal-footer">
+                                        <button class="btn-small green" onclick="handleMedicationAction('taken', '<%= medication._id %>')">Take</button>
+                                        <button class="btn-small yellow darken-2" onclick="handleMedicationAction('skip', '<%= medication._id %>')">Skip</button>
+                                        <button class="modal-close waves-effect waves-green btn-flat">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Edit Modal Structure -->
+                            <div id="editMedModal<%= medication._id %>" class="modal">
+                                <div class="modal-content">
+                                    <h4>Edit Medication</h4>
+                                    <form action="/medications/updatePills" method="post">
+                                        <input type="hidden" name="id" value="<%= medication._id %>">
+                                        <div class="input-field">
+                                            <input placeholder="Medication Name" name="name" type="text" value="<%= medication.name %>" class="validate" required>
+                                            <label for="name" class="active">Medication Name</label>
+                                        </div>
+                                        <div class="input-field">
+                                            <input placeholder="Dosage" name="dosage" type="text" value="<%= medication.dosage %>" class="validate" required>
+                                            <label for="name" class="active">Dosage</label>
+                                        </div>
+                                        <div class="input-field">
+                                            <input type="text" class="datepicker" name="startDate" value="<%= new Date(medication.startDate).toISOString().substring(0, 10) %>" required>
+                                            <label for="startDate" class="active">Start Date</label>
+                                        </div>
+                                        <div class="input-field">
+                                            <input type="text" class="datepicker" name="endDate" value="<%= new Date(medication.endDate).toISOString().substring(0, 10) %>" required>
+                                            <label for="endDate" class="active">End Date</label>
+                                        </div>
+                                        <div class="input-field">
+                                            <input id="interval" type="number" name="intervalHours" value="<%= medication.intervalHours %>" class="validate" required>
+                                            <label for="interval" class="active">Interval Hours</label>
+                                        </div>
+                                        <button class="btn waves-effect waves-light" type="submit">Update<i class="material-icons right">send</i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        <div class="row">
+          <div class="col s12">
+            <div class="card-panel white lighten-3">
+              <h5>Upcomming Medications<i class="small material-icons">notifications</i></h5>
+              <div v-for="medication in medications" :key="medication.name">
+                <div class="row">
+                  <div class="col s12">
+                    <span>{{ medication.name }}</span>
+                    <div class="progress" v-if="medication.needsRefill">
+                      <div class="determinate" style="width: 100%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Scripts for MaterializeCSS and handling actions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modals = document.querySelectorAll('.modal');
+            M.Modal.init(modals);
+            var datepickers = document.querySelectorAll('.datepicker');
+            M.Datepicker.init(datepickers, {format: 'yyyy-mm-dd'});
+
+            // Function to handle medication actions
+            function handleMedicationAction(action, id) {
+                fetch('/medications/updatePills', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ action, id })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        M.toast({html: `${action.charAt(0).toUpperCase() + action.slice(1)} action successful!`});
+                        setTimeout(() => location.reload(), 1500);  // Reloads the page after 1.5 seconds
+                    } else {
+                        M.toast({html: 'Failed to update medication'});
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            document.querySelectorAll('.action-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const action = this.getAttribute('data-action');
+                    const medId = this.getAttribute('data-id');
+
+                    handleMedicationAction(action, medId);
+                });
+            });
+        });
+    </script>
+   
+</body>
+</html>

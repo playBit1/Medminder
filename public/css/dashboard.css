@@ -1,0 +1,23 @@
+    /* Styling for the profile section */
+    .profile-section {
+        background-color: white;
+        color: #356bbd;
+        padding: 20px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
+    .profile-img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        margin-bottom: 20px;
+    }
+    .profile-name {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .profile-details {
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
