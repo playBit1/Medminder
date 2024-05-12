@@ -4,8 +4,6 @@ require('dotenv').config();
 const runDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
       serverApi: {
         version: '1',
         strict: true,

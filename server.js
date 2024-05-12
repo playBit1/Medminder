@@ -2,10 +2,12 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
+const cookieParser = require('cookie-parser');
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
