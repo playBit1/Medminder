@@ -54,7 +54,8 @@ const login = async (req, res, next) => {
       expiresIn: '1 hour',
     });
 
-    res.json({ token });
+    res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+    res.json({ message: 'Login successful' });
   } catch (error) {
     next(error);
   }
