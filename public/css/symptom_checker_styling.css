@@ -22,3 +22,7 @@
   font-weight: 700;
   padding-bottom: 25px;
 }
+.autocomplete-content {
+  max-height: 200px;
+  overflow-y: auto;
+}
