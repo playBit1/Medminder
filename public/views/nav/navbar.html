@@ -1,0 +1,25 @@
+<!-- Navbar Template -->
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">MedMinder</a>
+        <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        <ul class="right hide-on-med-and-down">
+            <li><a href='/dashboard'>Dashboard</a></li>
+            <li><a href='/medManager/index'>Med Manager</a></li>
+            <li><a href='/symptomChecker'>Symptom Checker</a></li>
+            <li class="notification-bell">
+                <a class="dropdown-trigger" href="#!" data-target="notifications-dropdown"><i class="material-icons">notifications_none</i></a>
+                <ul id="notifications-dropdown" class="dropdown-content">
+                    <!-- Notifications will be dynamically injected here -->
+                </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<!-- Mobile Sidenav -->
+<ul class="sidenav" id="mobile-demo">
+    <li><a href='/dashboard'>Dashboard</a></li>
+    <li><a href='/medManager/index'>Med Manager</a></li>
+    <li><a href='/symptomChecker'>Symptom Checker</a></li>
+</ul>

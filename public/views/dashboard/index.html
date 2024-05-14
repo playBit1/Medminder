@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedMinder</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/nav.css">
+</head>
+<body>
+    <div id="navbar-container"></div>
+     <!-- Profile section -->
+     <!--<div class="profile-section">
+        <img src="/images/placeholder.png" alt="Profile Picture" class="profile-img">
+        <div class="profile-name">John Doe</div>
+        <a href="edit-profile.html">Edit Profile</a>
+    </div>-->
+    <div class="container" style="width: 100%;">
+        <div class="row">
+            <div class="col s12">
+                <div class="card white lighten-3" style="padding: 10px;">
+                    <h5>Your Medicine Schedule<i class="small material-icons">access_time</i></h5>
+                    <div v-for="medication in medications" :key="medication.name">
+                        <div class="row">
+                            <div class="col s12">
+                                <table class="stripes responsive-table" style="width: 100%;">
+                                    <thead>
+                                        <tr>
+                                            <th>Medication</th>
+                                            <th>Dosage</th>
+                                            <th>End Date</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% medications.forEach(medication => { %>
+                                        <tr>
+                                            <td><%= medication.name %></td>
+                                            <td><%= medication.dosage %></td>
+                                            <td><%= new Date(medication.endDate).toDateString() %></td>
+                                            <td><%= medication.status %></td>
+                                            <td>
+                                                <button class="btn-small waves-effect blue modal-trigger" href="#medDetailsModal<%= medication._id %>" title="Details">
+                                                    <i class="large material-icons">description</i>
+                                                </button>
+                                                <button class="btn-small waves-effect blue">
+                                                    <i class="large material-icons">done</i>
+                                                </button>
+                                                <button class="btn-small waves-effect red">
+                                                    <i class="large material-icons">clear</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <% }); %> 
+
+                                        <tr>
+                                            <td>Medicine Name</td>
+                                            <td>Medicine Dosage</td>
+                                            <td>Medicine Time</td>
+                                            <td>Medicine Status</td>
+                                            <td>
+                                                <button class="btn-small waves-effect blue modal-trigger" href="#medDetailsModal<%= medication._id %>" title="Details">
+                                                    <i class="large material-icons">description</i>
+                                                </button>
+                                                <button class="btn-small waves-effect blue">
+                                                    <i class="large material-icons">done</i>
+                                                </button>
+                                                <button class="btn-small waves-effect red">
+                                                    <i class="large material-icons">clear</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Medicine Name</td>
+                                            <td>Medicine Dosage</td>
+                                            <td>Medicine Time</td>
+                                            <td>Medicine Status</td>
+                                            <td>
+                                                <button class="btn-small waves-effect blue modal-trigger" href="#medDetailsModal<%= medication._id %>" title="Details">
+                                                    <i class="large material-icons">description</i>
+                                                </button>
+                                                <button class="btn-small waves-effect blue">
+                                                    <i class="large material-icons">done</i>
+                                                </button>
+                                                <button class="btn-small waves-effect red">
+                                                    <i class="large material-icons">clear</i>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Scripts for MaterializeCSS and handling actions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="/js/navbar.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize dropdown
+            var elemsDropdown = document.querySelectorAll('.dropdown-trigger');
+            M.Dropdown.init(elemsDropdown, {
+                coverTrigger: false,
+                constrainWidth: false
+            });
+
+            // Initialize modals
+            var elemsModal = document.querySelectorAll('.modal');
+            M.Modal.init(elemsModal);
+
+            // Initialize datepickers
+            var elemsDatepicker = document.querySelectorAll('.datepicker');
+            M.Datepicker.init(elemsDatepicker, {format: 'yyyy-mm-dd'});
+
+            // Function to handle medication actions
+            function handleMedicationAction(action, id) {
+                fetch('/medications/updatePills', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ action, id })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        M.toast({html: `${action.charAt(0).toUpperCase() + action.slice(1)} action successful!`});
+                        setTimeout(() => location.reload(), 1500);  // Reloads the page after 1.5 seconds
+                    } else {
+                        M.toast({html: 'Failed to update medication'});
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    </script>
+</body>
+</html>

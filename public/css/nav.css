@@ -1,0 +1,47 @@
+/* ====================== Styling for the navbar =================== */
+nav {
+    background-color: #ffffff; /* White background */
+    box-shadow: none; /* Remove default shadow */
+  }
+  nav .brand-logo {
+    color: #0277bd; /* Custom blue color for the logo text */
+    font-size: 24px;
+    font-weight: 500;
+  }
+  nav .nav-wrapper {
+    padding: 0 20px; /* Padding on the sides */
+  }
+  nav ul a {
+    color: #0277bd; /* Blue color for the nav items */
+    font-size: 16px;
+    font-weight: 400;
+  }
+  nav ul a:hover {
+    background-color: transparent; /* Remove default hover background */
+    color: #01579b; /* Darker blue on hover */
+  }
+  .notification-bell a i {
+    color: #e57373; /* Red color for the bell icon */
+  }
+  .notification-bell .badge {
+    font-size: 0.8rem; /* Smaller badge size */
+    padding: 2px 5px; /* Padding inside the badge */
+    top: 0;
+    right: 5px;
+  }
+  .notification-bell .dropdown-content {
+    width: 300px;
+}
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.notification-item button {
+    margin-left: 5px;
+}
+.sidenav-trigger i {
+    color: blue;
+}
+
+  /**===========================NavbarStylingEnds==============================*/
