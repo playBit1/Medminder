@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Initialize sidenav after navbar is loaded
             var elemsSidenav = document.querySelectorAll('.sidenav');
             M.Sidenav.init(elemsSidenav);
+
+            // Load notifications into the dropdown
+            var notificationsDropdown = document.getElementById('notifications-dropdown');
+            var notificationTemplate = document.getElementById('notification-template').innerHTML;
+            notificationsDropdown.innerHTML = notificationTemplate;
         });
 
     // Placeholder function for handling medication actions
