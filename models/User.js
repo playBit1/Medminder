@@ -28,9 +28,9 @@ const userSchema = new mongoose.Schema({
       },
       time: {
         time1: { type: String, required: true },
-        time2: { type: String, required: true },
-        time3: { type: String, required: true },
-        time4: { type: String, required: true },
+        time2: { type: String },
+        time3: { type: String },
+        time4: { type: String },
       },
       start_date: { type: Date, required: true },
       end_date: { type: Date, required: true },
