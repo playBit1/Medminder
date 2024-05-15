@@ -1,37 +1,45 @@
 /* =============== Landing Page =============== */
-.navbar-custom {
-    background-color: white; /* Set your desired background color */
-    position: sticky;
-    top: 0;
-    z-index: 1;
-    mix-blend-mode:normal;
-  }
-
-  html {
-    scroll-behavior: smooth;
-}
-  .parallax-color {
-    background-color: #f5db74; /* Set your desired color */
-    /* Adjust the height as needed */
-    height: 300px; /* Example height; customize as desired */
-    width: 100%;
-}
-  /* .transparentBG {
-    background-color: rgba(0, 0, 0, 0); 
-} 
-
-.sidenav {
-    background-color: #fff; 
-    opacity: 1; 
-} */
-  .custom-menu-icon {
-    color: #4fc3f7; /* Replace with your desired color */
-}
-
 html, body {
-  margin: 0;
-  padding: 0;
   height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  scroll-behavior: smooth;
+}
+
+.site-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-body {
+  flex: 1;
+  margin-top: 100px; /* Adjust based on the navbar height */
+}
+
+.navbar-custom {
+  background-color: white; /* Set your desired background color */
+  position: fixed;
+  top: 0;
+  z-index: 1;
+  mix-blend-mode:normal;
+}
+
+.parallax-color {
+  background-color: #f5db74; /* Set your desired color */
+  /* Adjust the height as needed */
+  height: 300px; /* Example height; customize as desired */
+  width: 100%;
+}
+
+.space-parallax {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.custom-menu-icon {
+  color: #4fc3f7; /* Replace with your desired color */
 }
 
 .no-scrollbars {
@@ -46,19 +54,15 @@ html, body {
   min-height: 100%;
 }
  
-  .navbar-custom li a {
-    color: grey;  /* Set the text color  */
+.navbar-custom li a {
+  color: grey;  /* Set the text color  */
 }
 
 .page-footer {
-    background-color: #4fc3f7 ; /* Light blue color */
-    color: #333; /* Set your desired text color */
-    padding: 15px 0; /* Add some padding for spacing */
-    position: sticky;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    
+  background-color: #4fc3f7; /* Light blue color */
+  color: #333; /* Set your desired text color */
+  padding-bottom: 4px; /* Add some padding for spacing */
+  width: 100%;
 }
 
 /* =============== Med Manager Page =============== */
