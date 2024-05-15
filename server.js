@@ -23,6 +23,7 @@ const medManagerRoutes = require('./routes/medManagerRoutes');
 const symptomCheckerRoutes = require('./routes/symptom_checker_routes');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const dashboardRoutes = require('./routes/dashboard_routes');
 
 app.use('/medManager', medManagerRoutes);
 
@@ -31,6 +32,8 @@ app.use('/symptomChecker', symptomCheckerRoutes);
 app.use('/auth', authRoutes);
 
 app.use('/user', userRoutes);
+
+app.use ('/dashboard', dashboardRoutes);
 
 server.listen(3000, () => {
   runDB();
