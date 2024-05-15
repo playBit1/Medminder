@@ -12,7 +12,7 @@ const getAllMedication = async (req, res) => {
 
 const addMedication = async (req, res) => {
     try {        
-        const user = await User.findOne({ user_email: 'john.doe@example.com' });
+        const user = await User.findOne({ user_email: req.user.user_email });
         const { medication_name, dosage, frequency, time1, time2, time3, time4, start_date, end_date } = req.body;
 
         // Create a new medication object using the inner schema structure
