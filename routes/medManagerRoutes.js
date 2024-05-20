@@ -9,8 +9,10 @@ router.get('/index', function (req, res, html) {
     res.sendFile(path.join(__dirname, '../public/views/med_manager/index.html'));
 });
 
-router.get('/getMeds', medManagerController.getAllMedication);
+router.get('/getMeds', authenticate, medManagerController.getAllMedication);
 
 router.post('/addMed', authenticate, medManagerController.addMedication);
+
+router.post('/editMed', authenticate, medManagerController.editMedication);
 
 module.exports = router;
