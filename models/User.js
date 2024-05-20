@@ -75,6 +75,17 @@ userSchema.methods.addNewMedication = async function (newMedication) {
   }
 };
 
+// Utility function to find a medication by ID
+userSchema.methods.findMedicationById = function (medicationId) {
+  const medicationIdStr = medicationId.toString();
+  for (const [key, medication] of this.user_medication.entries()) {
+    if (medication._id.toString() === medicationIdStr) {
+      return { key, medication };
+    }
+  }
+  return null;
+}; 
+
 // edit medication
 userSchema.methods.editMedication = async function (medicationId, updatedMedication) {
   try {
@@ -82,42 +93,40 @@ userSchema.methods.editMedication = async function (medicationId, updatedMedicat
     this.user_medication = this.user_medication || new Map();
 
     // Convert medicationId to a string if it isn't already
-    const medicationIdStr = medicationId.toString();
-
-    // Find the medication by iterating through the map
-    let medicationToUpdate = null;
-    for (let [key, medication] of this.user_medication.entries()) {
-      if (medication._id.toString() === medicationIdStr) {
-        medicationToUpdate = medication;
-        break;
-      }
-    }
-
-    // Check if the medication with the provided ID exists
-    if (!medicationToUpdate) {
+    const found = this.findMedicationById(medicationId);
+    if (!found) {
       throw new Error('Medication not found');
-    }
+    } 
 
     // Update the medication details
-    medicationToUpdate.medication_name = updatedMedication.medication_name || medicationToUpdate.medication_name;
-    medicationToUpdate.dosage = updatedMedication.dosage || medicationToUpdate.dosage;
-    medicationToUpdate.frequency = updatedMedication.frequency || medicationToUpdate.frequency;
-    medicationToUpdate.time.time1 = updatedMedication.time.time1 || medicationToUpdate.time.time1;
-    medicationToUpdate.time.time2 = updatedMedication.time.time2 || medicationToUpdate.time.time2;
-    medicationToUpdate.time.time3 = updatedMedication.time.time3 || medicationToUpdate.time.time3;
-    medicationToUpdate.time.time4 = updatedMedication.time.time4 || medicationToUpdate.time.time4;
-    medicationToUpdate.start_date = updatedMedication.start_date || medicationToUpdate.start_date;
-    medicationToUpdate.end_date = updatedMedication.end_date || medicationToUpdate.end_date;
+    const { key, medication } = found;
+    Object.assign(medication, updatedMedication);
 
     // Save the changes to the database
+    this.user_medication.set(key, medication);
     await this.save();
     
-    return { message: 'Medication updated successfully', updatedMedication: medicationToUpdate };
+    return { message: 'Medication updated successfully', updatedMedication: updatedMedication };
   } catch (error) {
     throw error;
   }
 };
 
+// delete medication
+userSchema.methods.deleteMedication = async function (medicationId) {
+  try {
+    const found = this.findMedicationById(medicationId);
+    if (!found) {
+      throw new Error('Medication not found');
+    }
+
+    this.user_medication.delete(found.key);
+    await this.save();
+    return { message: 'Medication deleted successfully' };
+  } catch (error) {
+    throw error;
+  }
+};
 
 // Hashing the password before saving it
 userSchema.pre('save', async function (next) {

@@ -102,58 +102,6 @@ function updateTimesInput(modalId) {
     $('select').formSelect();
 }
 
-const openEditModal = (itemString) => {
-
-    const item = JSON.parse(decodeURIComponent(itemString));
-
-    $('#editModal #med_id').val(item._id);
-    $('#editModal #med_name').val(item.medication_name);
-    $('#editModal #dosage').val(item.dosage);
-    $('#editModal #frequency').val(item.frequency).formSelect();
-    $('#editModal #start_date').val(formatDate(item.start_date));
-    $('#editModal #end_date').val(formatDate(item.end_date));
-
-    var timeInputs = $('#editModal #timeInputs');
-    timeInputs.empty();
-
-    var numberOfTimes = 0;
-    switch (item.frequency) {
-        case 'Once a day':
-            numberOfTimes = 1;
-            break;
-        case 'Twice a day':
-            numberOfTimes = 2;
-            break;
-        case 'Three times a day':
-            numberOfTimes = 3;
-            break;
-        case 'Four times a day':
-            numberOfTimes = 4;
-            break;
-    }
-
-    for (var i = 1; i <= numberOfTimes; i++) {
-        var timeKey = 'time' + i;
-        var time = item.time[timeKey] || '';
-        timeInputs.append(`
-            <div class="input-field col s12">
-                <input type="time" id="time${i}" name="time${i}" class="validate" value="${time}" required/>
-                <label for="time${i}"><b>Time ${i}</b></label>
-            </div>
-        `);
-    }
-
-    $('select').formSelect();
-
-    // prevent value and label do not overlap
-    $('#editModal #med_name').next('label').addClass('active');
-    $('#editModal #dosage').next('label').addClass('active');
-    $('#editModal #start_date').next('label').addClass('active');
-    $('#editModal #end_date').next('label').addClass('active');
-
-    $('#editModal').modal('open');
-};
-
 function formatDate(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -161,7 +109,6 @@ function formatDate(dateString) {
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
-
 
 $(document).ready(function() { 
     initializeModal('addModal', "Add Medication");

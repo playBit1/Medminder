@@ -1,9 +1,17 @@
 const User = require('../models/User');
-const mongoose = require('mongoose');
+
+const findUserByEmail = async (email) => {
+    return await User.findOne({ user_email: email });
+};
+
+const handleErrorResponse = (res, err, message) => {
+    console.error(message, err);
+    res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+};
 
 const getAllMedication = async (req, res) => {
     try {
-        const user = await User.findOne({ user_email: req.user.user_email });
+        const user = await findUserByEmail(req.user.user_email);
 
         if (!user) {
             return res.status(404).json({ statusCode: 404, message: 'User not found' });
@@ -12,14 +20,13 @@ const getAllMedication = async (req, res) => {
         const results = await user.getAllUserMedications();
         res.json({ statusCode: 200, data: results, message: 'get all meds success' });
     } catch (err) {
-        console.error('Error getting meds:', err);
-        res.status(500).json({ statusCode: 500, message: 'Internal server error:' });
+        handleErrorResponse(res, err, 'Error getting meds:');
     }
 }
 
 const addMedication = async (req, res) => {
     try {        
-        const user = await User.findOne({ user_email: req.user.user_email });
+        const user = await findUserByEmail(req.user.user_email);
 
         if (!user) {
             return res.status(404).json({ statusCode: 404, message: 'User not found' });
@@ -42,20 +49,19 @@ const addMedication = async (req, res) => {
             end_date: end_date,
         };
 
-        // Call the addNewMedication method
+        // Call the addNewMedication method in User.js
         await user.addNewMedication(newMedication);
 
         res.status(201).json({ statusCode: 201, data: newMedication, message: 'Medication created successfully' });
     } catch (err) {
-        console.error('Error adding med:', err);
-        res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+        handleErrorResponse(res, err, 'Error adding med:');
     }
 }
 
 
 const editMedication = async (req, res) => {
     try {
-        const user = await User.findOne({ user_email: req.user.user_email });
+        const user = await findUserByEmail(req.user.user_email);
     
         if (!user) {
             return res.status(404).json({ statusCode: 404, message: 'User not found' });
@@ -83,14 +89,33 @@ const editMedication = async (req, res) => {
     
         res.status(200).json({ statusCode: 200, data: newMedication, message: 'Medication updated successfully' });
     } catch (err) {
-        console.error('Error updating medication:', err);
-        res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+        handleErrorResponse(res, err, 'Error updating medication:');
     }
 };
+
+const deleteMedication = async (req, res) => {
+    try {
+        const user = await findUserByEmail(req.user.user_email);
+    
+        if (!user) {
+            return res.status(404).json({ statusCode: 404, message: 'User not found' });
+        }
+
+        const medication_id = req.body._id;
+
+        await user.deleteMedication(medication_id);
+
+        res.status(200).json({ statusCode: 200, message: 'Medication deleted successfully' });
+
+    } catch (err) {
+        handleErrorResponse(res, err, 'Error deleting medication:');
+    }
+}
 
 module.exports = {
     getAllMedication,
     addMedication,
-    editMedication
+    editMedication,
+    deleteMedication
 }
 

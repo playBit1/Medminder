@@ -15,4 +15,6 @@ router.post('/addMed', authenticate, medManagerController.addMedication);
 
 router.post('/editMed', authenticate, medManagerController.editMedication);
 
+router.post('/deleteMed', authenticate, medManagerController.deleteMedication);
+
 module.exports = router;
