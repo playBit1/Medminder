@@ -10,9 +10,14 @@ const get = (url) => {
 // Get promise for POST request
 const post = (url, data) => {
     return new Promise((resolve, reject) => {
-        $.post(url, data)
-            .done(resolve)
-            .fail(reject);
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: resolve,
+            error: reject
+        });
     });
 };
 
@@ -23,18 +28,31 @@ const formatTime = (timeObj) => {
 
 const addIntoTable = (items) => {
     $("#card-section").empty();
+    const today = new Date();
     for (const medicationName in items) {
         if (items.hasOwnProperty(medicationName)) {
             const item = items[medicationName];
             const itemString = encodeURIComponent(JSON.stringify(item));
+            const startDate = new Date(item.start_date);
+            const endDate = new Date(item.end_date);
+            let status;
+
+            if (endDate < today) {
+                status = "Completed";
+            } else if (startDate > today) {
+                status = "Pending";
+            } else {
+                status = "Ongoing";
+            }
+
             let itemToAppend = 
                 `<tr><td>${item.medication_name}</td>` +
                 `<td>${item.dosage}</td>` +
                 `<td>${item.frequency}</td>` +
-                `<td>${new Date(item.start_date).toLocaleDateString()}</td>` +
-                `<td>${new Date(item.end_date).toLocaleDateString()}</td>` +
+                `<td>${startDate.toLocaleDateString()}</td>` +
+                `<td>${endDate.toLocaleDateString()}</td>` +
                 `<td>${formatTime(item.time)}</td>` +
-                `<td><span class="status-ongoing">Ongoing</span></td>` +
+                `<td><span class="status-${status.toLowerCase().replace(' ', '-')}"">${status}</span></td>` +
                 `<td><a onclick="openEditModal('${itemString}')"><i class="material-icons grey-text text-darken-1 edit-icon">edit</i></a>` +
                 `<a onclick="deleteMed('${item._id}')"><i class="material-icons red-text delete-icon">delete</i></a></td></tr>`;
             $("#card-section").append(itemToAppend);
@@ -154,7 +172,7 @@ const downloadpdf = () => {
         startY: 35
     });
 
-    doc.save('medication_records.pdf');
+    return doc;
 }
 
 const deleteMed = async (medication_id) => {
@@ -224,9 +242,31 @@ const openEditModal = (itemString) => {
     $('#editModal').modal('open');
 };
 
+document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth'
+    });
+    calendar.render();
+});
+
+const sendEmail = async () => {
+    // the medication record pdf is converted to base64 string to send it to the server
+    const pdfBase64 = downloadpdf().output('datauristring');
+
+    try {
+        // send the base64 pdf data to the server
+        const result = await post('/medManager/sendEmail', { pdf: pdfBase64 });
+        alert(result.message);
+        console.log("Email sent with attachment");
+    } catch (err) {
+        console.error('Error sending email:', err);
+    }
+};
+
 $(document).ready(function() { 
     $('#downloadbtn').click(()=>{ 
-        downloadpdf();
+        downloadpdf().save("medication_records.pdf");
     });
     login();    // to be deleted
     getMedications();
@@ -235,5 +275,8 @@ $(document).ready(function() {
     });
     $('#editModal #formSubmit').click(() => {
         editMedication();
+    })
+    $('#sendEmail').click(()=>{
+        sendEmail();
     })
 });

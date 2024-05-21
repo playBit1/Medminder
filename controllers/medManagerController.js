@@ -1,4 +1,5 @@
 const User = require('../models/User');
+var nodemailer = require('nodemailer');
 
 const findUserByEmail = async (email) => {
     return await User.findOne({ user_email: email });
@@ -112,10 +113,53 @@ const deleteMedication = async (req, res) => {
     }
 }
 
+const sendEmail = (req, res) => {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+
+    // handle base64 pdf 
+    const pdfBase64 = req.body.pdf;
+    const pdfBuffer = Buffer.from(pdfBase64.split(",")[1], 'base64');
+
+    var mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: req.user.user_email,
+        subject: 'Medication Records',
+        text: 'Please find attached the medication records.',
+        attachments: [
+            {
+                filename: 'medication_records.pdf',
+                content: pdfBuffer,
+                contentType: 'application/pdf'
+            }
+        ]
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log('Error occurred: ' + error.message);
+            res.status(500).json({ statusCode: 500, message: 'Failed to send email', error: error.message });
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).json({ statusCode: 200, message: 'Email sent successfully' });
+        }
+    });
+};
+
+
 module.exports = {
     getAllMedication,
     addMedication,
     editMedication,
-    deleteMedication
+    deleteMedication,
+    sendEmail
 }
 
