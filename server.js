@@ -4,6 +4,7 @@ const app = express();
 const server = require('http').createServer(app);
 const cookieParser = require('cookie-parser');
 const { runDB } = require('./dbConnection');
+let client = require('./dbConnection');
 
 // Middleware
 app.use(express.json());
@@ -24,6 +25,7 @@ const symptomCheckerRoutes = require('./routes/symptom_checker_routes');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const dashboardRoutes = require('./routes/dashboard_routes');
+const registerRoutes = require('./routes/registerRoutes');
 
 app.use('/medManager', medManagerRoutes);
 
@@ -35,7 +37,9 @@ app.use('/user', userRoutes);
 
 app.use ('/dashboard', dashboardRoutes);
 
+app.use ('/registerUser', registerRoutes);
+
 server.listen(3000, () => {
-  runDB();
+  //runDB();
   console.log('Server running on http://localhost:3000');
 });
