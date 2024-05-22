@@ -38,6 +38,40 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// get user's medications
+userSchema.statics.getAllUserMedications = async function () {
+  try {
+    const users = await this.find({});
+    const medicationList = users.map(user => user.user_medication);
+    return medicationList;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// add new medication to user's record
+userSchema.methods.addMedication = async function (newMedication) {
+  try {
+    this.user_medication.set(newMedication.medication_name, {
+      dosage: newMedication.dosage,
+      frequency: newMedication.frequency,
+      time: {
+        time1: newMedication.time1,
+        time2: newMedication.time2,
+        time3: newMedication.time3,
+        time4: newMedication.time4,
+      },
+      start_date: newMedication.start_date,
+      end_date: newMedication.end_date,
+    });
+
+    await this.save();
+    return { message: 'Medication added successfully' };
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Hashing the password before saving it
 userSchema.pre('save', async function (next) {
   const user = this;
