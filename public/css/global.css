@@ -67,61 +67,69 @@ html, body {
 
 /* =============== Med Manager Page =============== */
 hr.solid {
-    border-top: 3px solid #CED8E5;
+  border-top: 3px solid #CED8E5;
 }
 
 .status-ongoing {
-    background-color: rgba(97,162,73, 0.25);
-    color: #61A249;
-    padding: 7px;
-    font-weight:600;
-    border-radius: 5px;
+  background-color: rgba(97,162,73, 0.25);
+  color: #61A249;
+  padding: 7px;
+  font-weight:600;
+  border-radius: 5px;
 }
 
 .status-completed {
-    background-color: rgba(76, 158, 188, 0.25);
-    color: rgb(76, 158, 188);
-    padding: 7px;
-    font-weight:600;
-    border-radius: 5px;
+  background-color: rgba(76, 158, 188, 0.25);
+  color: rgb(76, 158, 188);
+  padding: 7px;
+  font-weight:600;
+  border-radius: 5px;
+}
+
+.status-pending {
+background-color: rgba(255, 191, 0, 0.25);
+color: rgb(255, 191, 0);
+padding: 7px;
+font-weight:600;
+border-radius: 5px;
 }
 
 .blue-btn {
-    background-color: #23A6F0;
-    color: white;
-    font-weight: 600;
+  background-color: #23A6F0;
+  color: white;
+  font-weight: 600;
 }
 
 .edit-icon, .delete-icon {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .addmed-header {
-    padding-bottom: 10px;
-    text-align: center;
-    color: #23A6F0;
-    font-weight: 600;
+  padding-bottom: 10px;
+  text-align: center;
+  color: #23A6F0;
+  font-weight: 600;
 }
 
 .cancel-btn {
-    width: 45%;
-    background-color: white;
-    color: #23A6F0;
-    font-weight: 600;
-    margin-top: 10px;
+  width: 45%;
+  background-color: white;
+  color: #23A6F0;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 .add-btn {
-    width: 45%;
-    background-color: #23A6F0;
-    color: white;
-    font-weight: 600;
-    margin-top: 10px;
+  width: 45%;
+  background-color: #23A6F0;
+  color: white;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 .btn:hover {
-    background-color: rgb(35, 166, 240) !important;
-    color: white;    
+  background-color: rgb(35, 166, 240) !important;
+  color: white;    
 }
 /*======================== NavBar ===============================*/
 /* ====================== Styling for the navbar =================== */
