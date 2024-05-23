@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.text())
         .then(data => {
             document.getElementById('navbar-container').innerHTML = data;
+
             // Initialize dropdowns after navbar is loaded
             var elemsDropdown = document.querySelectorAll('.dropdown-trigger');
             M.Dropdown.init(elemsDropdown, { coverTrigger: false, constrainWidth: false });
@@ -14,13 +15,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Load notifications into the dropdown
             var notificationsDropdown = document.getElementById('notifications-dropdown');
-            var notificationTemplate = document.getElementById('notification-template').innerHTML;
-            notificationsDropdown.innerHTML = notificationTemplate;
-        });
+            if (notificationsDropdown) {
+                console.log('Dropdown element found');
+                fetch('http://localhost:3000/notify')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data fetched:', data);
+                    const notifications = data.notifications;
+                    notificationsDropdown.innerHTML = ''; // Clear existing content
 
-    // Placeholder function for handling medication actions
-    window.handleMedicationAction = function(action, medicationId) {
-        // Your code to handle take/skip action
-        console.log(action, medicationId);
-    };
+                    notifications.forEach(notification => {
+                        const notificationItem = document.createElement('li');
+                        notificationItem.innerHTML = `
+                            <div class="notification">
+                                <div class="notification-header">
+                                    <i class="material-icons">notifications_none</i>
+                                    <span>${notification.medication_name}</span>
+                                </div>
+                                <div class="notification-body">
+                                    <span>${notification.date} at ${notification.time}</span>
+                                </div>
+                                <div class="status ${notification.status.toLowerCase().replace(' ', '-')}">
+                                    <i class="material-icons">
+                                        ${notification.status === 'Taken' ? 'check_circle' : notification.status === 'Skipped' ? 'cancel' : 'notifications_none'}
+                                    </i>
+                                    <span>${notification.status}</span>
+                                </div>
+                            </div>
+                        `;
+                        notificationsDropdown.appendChild(notificationItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching notifications:', error);
+                });
+            }
+
+            // Placeholder function for handling medication actions
+            window.handleMedicationAction = function(action, medicationId) {
+                // Your code to handle take/skip action
+                console.log(action, medicationId);
+            };
+        });
 });
