@@ -269,6 +269,16 @@ userSchema.methods.comparePassword = async function (password) {
   return bcrypt.compare(password, this.user_password);
 };
 
+// Method to update notification status
+userSchema.methods.updateNotificationStatus = async function (notificationId, status) {
+  const notification = this.user_notifications.get(notificationId);
+  if (notification) {
+    notification.status = status;
+    this.user_notifications.set(notificationId, notification);
+    await this.save();
+  }
+};
+
 const User = mongoose.model('User', userSchema);
 
 module.exports = User;
