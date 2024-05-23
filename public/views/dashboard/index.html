@@ -22,118 +22,57 @@
             <div class="profile-name">John Doe</div>
             <a href="edit-profile.html">Edit Profile</a>
         </div>-->
-        <main class="main-body">
-            <div class="container" style="width: 100%;">
-                <section class="calendar">
-                    <h5>Calendar</h5>
-                    <!-- Calendar implementation -->
-                </section>
-                <div id='calendar'></div>
 
+        <main class="main-body">
+            <div class="container top-space" style="width: 100%;">
+                <div class="row valign-wrapper">
+                    <div class="col m6 s6">
+                        <h5><i class="tiny material-icons">date_range</i> Calendar</h5>
+                    </div>
+                    <div class="col m6 s6 right-align"></div>
+                </div>
+                <hr class="solid">
+                <br>
+                <section class="calendar">
+                    <div id='calendar'></div>
+                </section>
             </div>
 
-            <div id="medModal" class="modal modal-fixed-footer">
+            <div id="medModal" class="modal">
                 <div class="row modal-content">
-                    <form class="col s12">
-                        <div class="col s12">
-                            <h5 class="addmed-header">View Medication</h5>
-                        </div>
-                        <div class="input-field col s12">
-                            <input id="med_name" type="text" value="Multivitamin-zinc-stress" readonly>
-                            <label for="med_name"><b>Medication Name</b></label>
-                        </div>
-                        <div class="input-field col s12">
-                            <input id="med_date" type="text" value="March 25, 2024" readonly>
-                            <label for="med_date"><b>Date</b></label>
-                        </div>
-                        <div class="input-field col s12">
-                            <input id="time" type="text" class="validate" value="9:00 am" required>
-                            <label for="time"><b>Time</b></label>
-                        </div>
-                        <div class="row center-align">
-                            <a href="#!" class="modal-close btn cancel-btn">Skip</a>
-                            <a href="#!" class="btn add-btn" id="formSubmit">Take</a>
-                        </div>
-                    </form>
+                    <div class="col s12">
+                        <h5 class="addmed-header">Medication Details</h5>
+                    </div>
+                    <span name="modal-id" id="modal-id" hidden></span>
+                    <div class="input-field col s12">
+                        <b>Medication Name: </b><span id="modal-medication-name"></span>
+                    </div>
+                    <div class="input-field col s12">
+                        <b>Date: </b><span id="modal-date"></span>
+                    </div>
+                    <div class="input-field col s12">
+                        <b>Time: </b><span id="modal-time"></span>
+                    </div>
+                    <div class="input-field col s12">
+                        <b>Status: </b><span id="modal-status"></span>
+                    </div>
+                </div>
+                <div class="row center-align" id="action-buttons">
+                    <a href="#!" class="modal-close btn cancel-btn" id="modal-skip-button">Skip</a>
+                    <a href="#!" class="btn add-btn" id="modal-take-button">Take</a>
+                </div> 
+                <div class="modal-footer" id="close-button">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
                 </div>
             </div>
+            <br><br>
         </main>
     </div>
 
     <!-- Scripts for MaterializeCSS and handling actions -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="/js/navbar.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize dropdown
-            var elemsDropdown = document.querySelectorAll('.dropdown-trigger');
-            M.Dropdown.init(elemsDropdown, {
-                coverTrigger: false,
-                constrainWidth: false
-            });
-
-            // Initialize modals
-            var elemsModal = document.querySelectorAll('.modal');
-            M.Modal.init(elemsModal);
-
-            // Initialize datepickers
-            var elemsDatepicker = document.querySelectorAll('.datepicker');
-            M.Datepicker.init(elemsDatepicker, {format: 'yyyy-mm-dd'});
-
-            // Function to handle medication actions
-            function handleMedicationAction(action, id) {
-                fetch('/medications/updatePills', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ action, id })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        M.toast({html: `${action.charAt(0).toUpperCase() + action.slice(1)} action successful!`});
-                        setTimeout(() => location.reload(), 1500);  // Reloads the page after 1.5 seconds
-                    } else {
-                        M.toast({html: 'Failed to update medication'});
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-            }
-        });
-
-        $(document).ready(function() { 
-            $('.modal').modal();   
-        });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                views: 
-                {
-                    dayGridMonth: {
-                        titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
-                    }
-                },
-                events: [
-                    {
-                        title: 'My Event',
-                        start: '2024-05-22T12:30:00',
-                        end: '2024-05-22T13:30:00',
-                        extendedProps: {
-                            description: 'Test 1'
-                        },
-                        color: '#336e03'
-                    }
-                ],
-                eventClick: function() {
-                    $('#medModal').modal('open');
-                }
-            });
-            calendar.render();
-        });
-  
-    </script>
+    <script src="../../js/navbar.js"></script>
+    <script src="../../js/dashboard_script.js"></script>
 </body>
 </html>

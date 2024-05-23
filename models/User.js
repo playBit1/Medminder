@@ -65,6 +65,15 @@ userSchema.methods.getAllUserMedications = async function () {
   }
 };
 
+// get user's notifications
+userSchema.methods.getAllNotifications = async function () {
+  try {
+    return this.user_notifications;
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Utility function to find a medication by ID
 userSchema.methods.findMedicationById = function (medicationId) {
   const medicationIdStr = medicationId.toString();
@@ -76,8 +85,8 @@ userSchema.methods.findMedicationById = function (medicationId) {
   return null;
 }; 
 
-// Utility function to find a list of notifications by ID
-userSchema.methods.findNotificationsById = function (medicationId) {
+// Utility function to find a list of notifications by medication ID
+userSchema.methods.findNotificationsByMedicationId = function (medicationId) {
   var arr = [];
   for (const [key, notification] of this.user_notifications.entries()) {
     if (notification.medication_id === medicationId) {
@@ -85,6 +94,16 @@ userSchema.methods.findNotificationsById = function (medicationId) {
     }
   }
   return arr;
+}
+
+// Utility function to find a list of notifications by medication ID
+userSchema.methods.findNotificationByNotificationId = function (notificationId) {
+  for (const [key, notification] of this.user_notifications.entries()) {
+    if (notification._id.toString() === notificationId) {
+      return {key, notification};
+    }
+  }
+  return null;
 }
 
 // Utility function to generate notifications
@@ -115,7 +134,7 @@ userSchema.methods.generateNotifications = function (newMedication, newMedIdStri
 };
 
 userSchema.methods.deleteNotifications = function (medicationId) {
-  const notifications = this.findNotificationsById(medicationId);
+  const notifications = this.findNotificationsByMedicationId(medicationId);
   notifications.forEach(({ key }) => this.user_notifications.delete(key));
 }
 
@@ -199,6 +218,31 @@ userSchema.methods.deleteMedication = async function (medicationId) {
     this.user_medication.delete(found.key);
     await this.save();
     return { message: 'Medication deleted successfully' };
+  } catch (error) {
+    throw error;
+  }
+};
+
+// edit medication
+userSchema.methods.updateNotificationStatus = async function (notificationId, status) {
+  try {
+    // Ensure user_medication is initialized as a Map
+    this.user_notifications = this.user_notifications || new Map();
+
+    const found_notification = this.findNotificationByNotificationId(notificationId);
+    if (!found_notification) {
+      throw new Error('Notification not found');
+    }
+
+    // Update the status of the found notification
+    const { key, notification } = found_notification;
+    notification.status = status;
+
+    // Save the changes to the database
+    this.user_notifications.set(key, notification);
+    await this.save();
+    
+    return { message: 'Notification updated successfully' };
   } catch (error) {
     throw error;
   }
