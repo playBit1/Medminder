@@ -13,9 +13,8 @@ app.use(cookieParser());
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Route to render the index.ejs on the root URL
 app.get('/', (req, res) => {
-  res.render('index', { medications: [] }); // You need to adjust the data passed to the template as per your actual data handling
+  res.render('index');
 });
 
 // Routes
