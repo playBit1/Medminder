@@ -36,40 +36,30 @@ const userSchema = new mongoose.Schema({
       end_date: { type: Date, required: true },
     }, { _id: true }),
   },
+  user_notifications: {
+    type: Map,
+    of: new mongoose.Schema({
+      medication_id: {type: String, required: true},
+      medication_name: { type: String, required: true },
+      date: { type: String, required: true },
+      time: { type: String, required: true },
+      status: {
+        type: String,
+        enum: [
+          'Taken',
+          'Not taken',
+          'Skipped'
+        ],
+        default: 'Not taken',
+      }
+    })
+  }
 });
 
 // get user's medications
 userSchema.methods.getAllUserMedications = async function () {
   try {
     return this.user_medication;
-  } catch (error) {
-    throw error;
-  }
-};
-
-// add new medication
-userSchema.methods.addNewMedication = async function (newMedication) {
-  try {
-    // Ensure user_medication is initialized as a Map
-    this.user_medication = this.user_medication || new Map();
-
-    const newMedId = new mongoose.Types.ObjectId(); // Generate a new ObjectId
-    this.user_medication.set(newMedId.toString(), {
-      medication_name: newMedication.medication_name,
-      dosage: newMedication.dosage,
-      frequency: newMedication.frequency,
-      time: {
-        time1: newMedication.time.time1,
-        time2: newMedication.time.time2,
-        time3: newMedication.time.time3,
-        time4: newMedication.time.time4,
-      },
-      start_date: newMedication.start_date,
-      end_date: newMedication.end_date,
-    });
-
-    await this.save();
-    return { message: 'Medication added successfully' };
   } catch (error) {
     throw error;
   }
@@ -86,21 +76,104 @@ userSchema.methods.findMedicationById = function (medicationId) {
   return null;
 }; 
 
+// Utility function to find a list of notifications by ID
+userSchema.methods.findNotificationsById = function (medicationId) {
+  var arr = [];
+  for (const [key, notification] of this.user_notifications.entries()) {
+    if (notification.medication_id === medicationId) {
+      arr.push({key, notification});
+    }
+  }
+  return arr;
+}
+
+// Utility function to generate notifications
+userSchema.methods.generateNotifications = function (newMedication, newMedIdString) {
+  const startDate = new Date(newMedication.start_date);
+  const endDate = new Date(newMedication.end_date);
+  const timeKeys = ['time1', 'time2', 'time3', 'time4'];
+  const reminderTimes = timeKeys
+    .map(key => newMedication.time[key])
+    .filter(time => time); // Filter out undefined or null times
+
+  let currentDate = new Date(startDate);
+  while (currentDate <= endDate) {
+    for (const time of reminderTimes) {
+      const notificationId = new mongoose.Types.ObjectId(); // Generate a new ObjectId for the notification
+      const notificationDate = currentDate.toISOString().split('T')[0]; // Get date in YYYY-MM-DD format
+
+      this.user_notifications.set(notificationId.toString(), {
+        medication_id: newMedIdString,
+        medication_name: newMedication.medication_name,
+        date: notificationDate,
+        time: time,
+        status: 'Not taken',
+      });
+    }
+    currentDate.setDate(currentDate.getDate() + 1); // Move to the next day
+  }
+};
+
+userSchema.methods.deleteNotifications = function (medicationId) {
+  const notifications = this.findNotificationsById(medicationId);
+  notifications.forEach(({ key }) => this.user_notifications.delete(key));
+}
+
+// add new medication
+userSchema.methods.addNewMedication = async function (newMedication) {
+  try {
+    // Ensure user_medication is initialized as a Map
+    this.user_medication = this.user_medication || new Map();
+    this.user_notifications = this.user_notifications || new Map();
+
+    const newMedId = new mongoose.Types.ObjectId(); // Generate a new ObjectId
+    const newMedIdString = newMedId.toString();
+    this.user_medication.set(newMedIdString, {
+      medication_name: newMedication.medication_name,
+      dosage: newMedication.dosage,
+      frequency: newMedication.frequency,
+      time: {
+        time1: newMedication.time.time1,
+        time2: newMedication.time.time2,
+        time3: newMedication.time.time3,
+        time4: newMedication.time.time4,
+      },
+      start_date: newMedication.start_date,
+      end_date: newMedication.end_date,
+      _id: newMedId
+    });
+
+    // Generate notifications for each reminder time
+    this.generateNotifications(newMedication, newMedIdString);
+    
+    await this.save();
+    return { message: 'Medication added successfully' };
+  } catch (error) {
+    throw error;
+  }
+};
+
 // edit medication
 userSchema.methods.editMedication = async function (medicationId, updatedMedication) {
   try {
     // Ensure user_medication is initialized as a Map
     this.user_medication = this.user_medication || new Map();
+    this.user_notifications = this.user_notifications || new Map();
 
-    // Convert medicationId to a string if it isn't already
-    const found = this.findMedicationById(medicationId);
-    if (!found) {
+    const found_medication = this.findMedicationById(medicationId);
+    if (!found_medication) {
       throw new Error('Medication not found');
-    } 
+    }
 
     // Update the medication details
-    const { key, medication } = found;
+    const { key, medication } = found_medication;
     Object.assign(medication, updatedMedication);
+
+    // Remove existing notifications for this medication
+    this.deleteNotifications(medicationId);
+
+    // Generate new notifications for the updated medication
+    this.generateNotifications(updatedMedication, medicationId.toString());
 
     // Save the changes to the database
     this.user_medication.set(key, medication);
@@ -119,6 +192,9 @@ userSchema.methods.deleteMedication = async function (medicationId) {
     if (!found) {
       throw new Error('Medication not found');
     }
+
+    // Remove existing notifications for this medication
+    this.deleteNotifications(medicationId);
 
     this.user_medication.delete(found.key);
     await this.save();
