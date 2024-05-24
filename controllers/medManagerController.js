@@ -1,18 +1,38 @@
 const User = require('../models/User');
+var nodemailer = require('nodemailer');
+
+const findUserByEmail = async (email) => {
+    return await User.findOne({ user_email: email });
+};
+
+const handleErrorResponse = (res, err, message) => {
+    console.error(message, err);
+    res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+};
 
 const getAllMedication = async (req, res) => {
     try {
-        const results = await User.getAllUserMedications();
+        const user = await findUserByEmail(req.user.user_email);
+
+        if (!user) {
+            return res.status(404).json({ statusCode: 404, message: 'User not found' });
+        }
+
+        const results = await user.getAllUserMedications();
         res.json({ statusCode: 200, data: results, message: 'get all meds success' });
     } catch (err) {
-        console.error('Error getting meds:', err);
-        res.status(500).json({ statusCode: 500, message: 'Internal server error:' });
+        handleErrorResponse(res, err, 'Error getting meds:');
     }
 }
 
 const addMedication = async (req, res) => {
     try {        
-        const user = await User.findOne({ user_email: 'john.doe@example.com' });
+        const user = await findUserByEmail(req.user.user_email);
+
+        if (!user) {
+            return res.status(404).json({ statusCode: 404, message: 'User not found' });
+        }
+
         const { medication_name, dosage, frequency, time1, time2, time3, time4, start_date, end_date } = req.body;
 
         // Create a new medication object using the inner schema structure
@@ -30,22 +50,116 @@ const addMedication = async (req, res) => {
             end_date: end_date,
         };
 
-        // Convert medication_name to string to ensure it's a valid key for the map
-        const medicationKey = String(medication_name);
-
-        // Add the new medication to the user's medication map
-        user.user_medication.set(medicationKey, newMedication);
-        await user.save();
+        // Call the addNewMedication method in User.js
+        await user.addNewMedication(newMedication);
 
         res.status(201).json({ statusCode: 201, data: newMedication, message: 'Medication created successfully' });
     } catch (err) {
-        console.error('Error adding med:', err);
-        res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+        handleErrorResponse(res, err, 'Error adding med:');
     }
 }
 
+
+const editMedication = async (req, res) => {
+    try {
+        const user = await findUserByEmail(req.user.user_email);
+    
+        if (!user) {
+            return res.status(404).json({ statusCode: 404, message: 'User not found' });
+        }
+
+        const { _id, medication_name, dosage, frequency, time1, time2, time3, time4, start_date, end_date } = req.body;
+        
+        // Create a new medication object using the inner schema structure
+        const newMedication = {
+            _id: _id,
+            medication_name: medication_name,
+            dosage: dosage,
+            frequency: frequency,
+            time: {
+                time1: time1,
+                time2: time2,
+                time3: time3,
+                time4: time4,
+            },
+            start_date: start_date,
+            end_date: end_date,
+        };
+
+        await user.editMedication(_id, newMedication);
+    
+        res.status(200).json({ statusCode: 200, data: newMedication, message: 'Medication updated successfully' });
+    } catch (err) {
+        handleErrorResponse(res, err, 'Error updating medication:');
+    }
+};
+
+const deleteMedication = async (req, res) => {
+    try {
+        const user = await findUserByEmail(req.user.user_email);
+    
+        if (!user) {
+            return res.status(404).json({ statusCode: 404, message: 'User not found' });
+        }
+
+        const medication_id = req.body._id;
+
+        await user.deleteMedication(medication_id);
+
+        res.status(200).json({ statusCode: 200, message: 'Medication deleted successfully' });
+
+    } catch (err) {
+        handleErrorResponse(res, err, 'Error deleting medication:');
+    }
+}
+
+const sendEmail = (req, res) => {
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    });
+
+    // handle base64 pdf 
+    const pdfBase64 = req.body.pdf;
+    const pdfBuffer = Buffer.from(pdfBase64.split(",")[1], 'base64');
+
+    var mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: req.user.user_email,
+        subject: 'Medication Records',
+        text: 'Please find attached the medication records.',
+        attachments: [
+            {
+                filename: 'medication_records.pdf',
+                content: pdfBuffer,
+                contentType: 'application/pdf'
+            }
+        ]
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+            console.log('Error occurred: ' + error.message);
+            res.status(500).json({ statusCode: 500, message: 'Failed to send email', error: error.message });
+        } else {
+            console.log('Email sent: ' + info.response);
+            res.status(200).json({ statusCode: 200, message: 'Email sent successfully' });
+        }
+    });
+};
+
+
 module.exports = {
     getAllMedication,
-    addMedication
+    addMedication,
+    editMedication,
+    deleteMedication,
+    sendEmail
 }
 
