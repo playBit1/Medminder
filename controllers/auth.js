@@ -10,8 +10,7 @@ const register = async (req, res, next) => {
     user_password,
     user_first_name,
     user_last_name,
-    user_gender,
-    user_medication,
+    user_gender
   } = req.body;
 
   try {
@@ -23,8 +22,7 @@ const register = async (req, res, next) => {
       user_password: hashedPassword,
       user_first_name,
       user_last_name,
-      user_gender,
-      user_medication,
+      user_gender
     });
     await user.save();
     res.json({ message: 'Registration successful' });
