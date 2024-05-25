@@ -10,16 +10,11 @@ const register = async (req, res, next) => {
     user_password,
     user_first_name,
     user_last_name,
-    user_gender
+    user_gender,
+    user_medication,
   } = req.body;
 
   try {
-    // Check if the user already exists
-    const existingUser = await User.findOne({ user_email });
-    if (existingUser) {
-      return res.status(404).json({ statusCode: 404, message: 'User already exists' });
-    }
-
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(user_password, salt);
 
@@ -28,11 +23,11 @@ const register = async (req, res, next) => {
       user_password: hashedPassword,
       user_first_name,
       user_last_name,
-      user_gender
+      user_gender,
+      user_medication,
     });
-
     await user.save();
-    res.status(200).json({ statusCode: 200, message: 'Registration successful' });
+    res.json({ message: 'Registration successful' });
   } catch (error) {
     next(error);
   }
@@ -66,4 +61,11 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login };
+// Logout a user
+const logout = (req, res) => {
+  res.clearCookie('token');
+  res.json({ message: 'Logout successful' });
+};
+
+
+module.exports = { register, login, logout };
