@@ -74,6 +74,16 @@ userSchema.methods.getAllNotifications = async function () {
   }
 };
 
+userSchema.methods.findUserById = function (userId) {
+  const userIdStr = userId.toString();
+  for (const [key, user] of this.entries()) {
+    if (user._id.toString() === userIdStr) {
+      return { key, user };
+    }
+  }
+  return null;
+}
+
 // Utility function to find a medication by ID
 userSchema.methods.findMedicationById = function (medicationId) {
   const medicationIdStr = medicationId.toString();
@@ -267,6 +277,18 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.comparePassword = async function (password) {
   //console.log(password, ' + ', this.user_password);
   return bcrypt.compare(password, this.user_password);
+};
+
+userSchema.methods.updatePassword = async function (password) {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    this.user_password = hashedPassword;
+    await this.save();
+    return 'Password updated successfully';
+  } catch (error) {
+    throw error;
+  }
 };
 
 const User = mongoose.model('User', userSchema);

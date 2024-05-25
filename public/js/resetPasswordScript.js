@@ -15,15 +15,14 @@ function postResetPassword(token, id, newPassword) {
   let data={};
   data.password=newPassword;
   $.ajax({
-      url: `/resetPassword/${token}/${id}`,
+      url: `/forgotPassword/${token}/${id}`,
       data: {newPassword},
       type: 'POST',
       success: (result) => {
-          console.log(result);
-          window.location.href='http://localhost:3000/index - Login.html';
+        window.location.href = "/user/login";
       },
       error: (xhr, status, error) => {
-          console.error('Error submitting data:', error);
+        console.error('Error submitting data:', error);
       }
   });
 }

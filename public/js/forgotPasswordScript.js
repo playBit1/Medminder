@@ -1,23 +1,22 @@
 function forgotPasswordForm(){
-     let email = $('#email').val();
-     console.log("Email for Forgot Password Submitted: ", email );
-     postForgotPassword(email);
-    }
-
+  let email = $('#email').val();
+  console.log("Email for Forgot Password Submitted: ", email );
+  postForgotPassword(email);
+}
 
 function postForgotPassword(email) {
   let data={};
   data.email = email;
   $.ajax({
-      url: '/forgotPassword',
-      data: data,
-      type: 'POST',
-      success: (result) => {
-          console.log(result);
-      },
-      error: (xhr, status, error) => {
-          console.error('Error submitting data:', error);
-      }
+    url: '/forgotPassword/sendEmail',
+    data: data,
+    type: 'POST',
+    success: (result) => {
+      console.log(result);
+    },
+    error: (xhr, status, error) => {
+      console.error('Error submitting data:', error);
+    }
   });
 }
 
