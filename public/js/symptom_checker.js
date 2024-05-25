@@ -1,13 +1,12 @@
 let symptomList = [];
 
 $(document).ready(function () {
-  $('.modal').modal();
-});
-
-//Initialize the materialize autocomplete with diesease data
-$(document).ready(function () {
   $('input.autocomplete').autocomplete({
     data: autocompleteData,
+    onAutocomplete: function (symptom) {
+      createChip(symptom);
+      $('#autocomplete-input').val('');
+    },
   });
 });
 
@@ -17,13 +16,16 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  const nextButton = document.querySelector('.btn-large.blue');
-  nextButton.addEventListener('click', handleNextButtonClick);
+  const nextButton = document.getElementById('submit-symptoms');
+  nextButton.addEventListener('click', submitSymptoms);
 });
 
 function addSymptomToList(symptom) {
-  symptomList.push(symptom.toLowerCase().replace(/ /g, '_'));
-  console.log(symptomList);
+  const lowercaseSymptom = symptom.toLowerCase().replace(/ /g, '_');
+  if (!symptomList.includes(lowercaseSymptom)) {
+    symptomList.push(lowercaseSymptom);
+    console.log(symptomList);
+  }
 }
 
 function handleInputKeyDown(event) {
@@ -36,28 +38,50 @@ function handleInputKeyDown(event) {
   }
 }
 
-function handleNextButtonClick() {
-  const chipElement = document.querySelector('.chips');
-  const instance = M.Chips.getInstance(chipElement);
-
-  instance.chipsData.forEach((chipData) => {
-    const symptomText = chipData.tag;
-    addSymptomToList(symptomText);
-  });
-
-  console.log(symptomList);
-}
-
 function createChip(symptomText) {
   const chipContainer = document.getElementById('symptoms');
+  const lowercaseSymptom = symptomText.toLowerCase().replace(/ /g, '_');
 
-  const sympChip = ` <div class="chip"> ${
-    diseaseEmojis[symptomText.toLowerCase()]
-      ? diseaseEmojis[symptomText.toLowerCase()]
-      : ''
-  } ${symptomText} <i class="close material-icons">close</i> </div>`;
+  if (!symptomList.includes(lowercaseSymptom)) {
+    const sympChip = document.createElement('div');
+    sympChip.classList.add('chip');
+    sympChip.textContent = `${
+      diseaseEmojis[symptomText.toLowerCase()] || ''
+    } ${symptomText}`;
 
-  chipContainer.innerHTML += sympChip;
+    const closeIcon = document.createElement('i');
+    closeIcon.classList.add('close', 'material-icons');
+    closeIcon.textContent = 'close';
+    closeIcon.addEventListener('click', () => {
+      chipContainer.removeChild(sympChip);
+      symptomList = symptomList.filter(
+        (symptom) => symptom !== lowercaseSymptom
+      );
+    });
+
+    sympChip.appendChild(closeIcon);
+    chipContainer.appendChild(sympChip);
+    addSymptomToList(lowercaseSymptom);
+  }
+}
+
+function submitSymptoms() {
+  const data = { symptoms: symptomList };
+
+  $.ajax({
+    url: 'http://20.53.220.253:3004/predict',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: function (result) {
+      console.log('Success:', result);
+      // Handle success scenario
+    },
+    error: function (error) {
+      console.error('Error:', error);
+      // Handle error scenario
+    },
+  });
 }
 
 const diseaseEmojis = {
