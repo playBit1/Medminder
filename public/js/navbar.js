@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     </div>
                                     ${notification.status === 'Not taken' ? `
                                     <div class="notification-actions">
-                                        <button onclick="handleMedicationAction('taken', '${notification._id}', ${index})">Taken</button>
-                                        <button onclick="handleMedicationAction('skipped', '${notification._id}', ${index})">Skipped</button>
+                                        <button onclick="handleMedicationAction('Taken', '${notification._id}', ${index})">Taken</button>
+                                        <button onclick="handleMedicationAction('Skipped', '${notification._id}', ${index})">Skipped</button>
                                     </div>
                                     ` : ''}
                                 </div>
@@ -67,14 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Function for handling medication actions
-            window.handleMedicationAction = function(action, medicationId, index) {
-                console.log(`Handling action: ${action} for medicationId: ${medicationId} at index: ${index}`);
-                fetch(`http://localhost:3000/notify/taken/${medicationId}`, {
+            window.handleMedicationAction = function(action, notificationId, index) {
+                console.log(`Handling action: ${action} for medicationId: ${notificationId} at index: ${index}`);
+                fetch(`http://localhost:3000/notify/taken/${notificationId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ status: action })
+                    body: JSON.stringify({ notificationId: notificationId, status: action })
                 })
                 .then(response => {
                     if (!response.ok) {

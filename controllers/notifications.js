@@ -44,31 +44,8 @@ const updateNotificationStatus = async (req, res, next) => {
           return res.status(404).json({ message: 'User not found' });
       }
 
-      console.log('User found:', JSON.stringify(user, null, 2));
-      console.log('All notification keys:', Array.from(user.user_notifications.keys()));
-
-      // Additional debugging to compare keys directly
-      Array.from(user.user_notifications.keys()).forEach(key => {
-          console.log(`Comparing '${key}' to '${notificationId}'`, key === notificationId);
-      });
-
-      if (user.user_notifications.has(notificationId)) {
-          const notification = user.user_notifications.get(notificationId);
-          console.log('Notification found:', notification);
-
-          if (notification) {
-              notification.status = status;
-              user.user_notifications.set(notificationId, notification); // Update the Map entry
-              await user.save();
-              return res.json({ message: 'Notification status updated' });
-          } else {
-              console.log('Notification ID found but no corresponding entry:', notificationId);
-              res.status(404).json({ message: 'Notification not found' });
-          }
-      } else {
-          console.log('Notification ID not found:', notificationId);
-          res.status(404).json({ message: 'Notification not found' });
-      }
+      await user.updateNotificationStatus(notificationId, status);
+      res.json({ statusCode: 200, message: 'update notification status success' });
   } catch (error) {
       console.error('Error updating notification status:', error);
       res.status(500).json({ message: 'Failed to update notification status' });

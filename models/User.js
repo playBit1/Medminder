@@ -242,7 +242,7 @@ userSchema.methods.updateNotificationStatus = async function (notificationId, st
     this.user_notifications.set(key, notification);
     await this.save();
     
-    return { message: 'Notification updated successfully' };
+    return 'Notification updated successfully';
   } catch (error) {
     throw error;
   }
@@ -267,16 +267,6 @@ userSchema.pre('save', async function (next) {
 userSchema.methods.comparePassword = async function (password) {
   //console.log(password, ' + ', this.user_password);
   return bcrypt.compare(password, this.user_password);
-};
-
-// Method to update notification status
-userSchema.methods.updateNotificationStatus = async function (notificationId, status) {
-  const notification = this.user_notifications.get(notificationId);
-  if (notification) {
-    notification.status = status;
-    this.user_notifications.set(notificationId, notification);
-    await this.save();
-  }
 };
 
 const User = mongoose.model('User', userSchema);
