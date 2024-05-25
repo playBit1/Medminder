@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
@@ -9,6 +10,7 @@ const { runDB } = require('./dbConnection');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors({}));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -33,7 +35,7 @@ app.use('/auth', authRoutes);
 
 app.use('/user', userRoutes);
 
-app.use ('/dashboard', dashboardRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 app.use('/forgotPassword', forgotPasswordRoutes);
 

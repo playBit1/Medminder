@@ -18,7 +18,7 @@
     rel="stylesheet" />
   <link
     rel="stylesheet"
-    href="/public/css/symptom_checker_styling.css" />
+    href="/css/symptom_checker_styling.css" />
   <link
     rel="stylesheet"
     href="/css/global.css" />
@@ -86,21 +86,9 @@
               style="margin-left: 16px">
               Possible Diagnosis
             </h5>
-            <div class="diagnosis-body">
-              <!-- <div class="card grey lighten-3 z-depth-0">
-            <div class="card-content row">
-              <span class="card-title col s6">Diagnosis</span>
-              <div class="right-align col s6">
-                <i class="material-icons">close</i>
-              </div>
-
-              <p class="col s12">
-                You might have a rotavirus infection called Rotavirus. Other
-                VIRUSES or rhinovirus may also cause these symptoms.
-              </p>
-            </div>
-          </div> -->
-            </div>
+            <div
+              id="diagnosis-results"
+              class="diagnosis-body"></div>
             <p class="disclaimer">
               *Disclaimer this is not professional medical advice <br />
               Please Contact a Medical Professional for more information
@@ -113,6 +101,6 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-  <script src="/public/js/symptom_checker.js"></script>
+  <script src="/js/symptom_checker.js"></script>
   <script src="../../js/navbar.js"></script>
 </body>

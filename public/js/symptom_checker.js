@@ -65,21 +65,50 @@ function createChip(symptomText) {
   }
 }
 
+function createDiagnosis(result) {
+  const diagnosisContainer = document.getElementById('diagnosis-results');
+  const diagnosisCard = document.createElement('div');
+  diagnosisCard.classList.add('card', 'grey', 'lighten-3', 'z-depth-0');
+
+  const cardContent = document.createElement('div');
+  cardContent.classList.add('card-content', 'row');
+
+  const cardTitle = document.createElement('span');
+  cardTitle.classList.add('card-title', 'col', 's6');
+  cardTitle.textContent = 'Diagnosis';
+
+  const closeIcon = document.createElement('div');
+  closeIcon.classList.add('right-align', 'col', 's6');
+  const icon = document.createElement('i');
+  icon.classList.add('material-icons');
+  icon.textContent = 'close';
+  closeIcon.appendChild(icon);
+
+  const diagnosisText = document.createElement('p');
+  diagnosisText.classList.add('col', 's12');
+  diagnosisText.textContent = result['disease'];
+
+  cardContent.appendChild(cardTitle);
+  cardContent.appendChild(closeIcon);
+  cardContent.appendChild(diagnosisText);
+  diagnosisCard.appendChild(cardContent);
+  diagnosisContainer.appendChild(diagnosisCard);
+}
+
 function submitSymptoms() {
   const data = { symptoms: symptomList };
 
   $.ajax({
-    url: 'http://20.53.220.253:3004/predict',
+    url: 'http://20.92.138.252:3004/predict',
     type: 'POST',
     contentType: 'application/json',
     data: JSON.stringify(data),
     success: function (result) {
       console.log('Success:', result);
-      // Handle success scenario
+      createDiagnosis(result);
     },
     error: function (error) {
       console.error('Error:', error);
-      // Handle error scenario
     },
   });
 }
