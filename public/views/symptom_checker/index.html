@@ -19,106 +19,94 @@
   <link
     rel="stylesheet"
     href="/public/css/symptom_checker_styling.css" />
-  <link rel="stylesheet" href="/css/global.css">
-  
+  <link
+    rel="stylesheet"
+    href="/css/global.css" />
+
   <title>MedMinder+</title>
 </head>
 <body>
-  <div id="navbar-container"></div>
-
   <main>
-  <div
-    class="row"
-    style="padding-top: 8%">
-    <div
-      class="col s6 left-side"
-      style="padding: 0% 7% 0% 10%">
-      <div class="">
-        <h3 class="main-headings">Symptom Checker</h3>
-        <p class="symptom-desc">Tell us about your symptoms, one at a time.</p>
-        <div style="width: 50%">
-          <div class="input-field">
-            <i class="material-icons prefix">search</i>
-            <input
-              type="text"
-              id="autocomplete-input"
-              class="autocomplete" />
-            <label for="autocomplete-input">Enter your symptoms</label>
+    <div class="row whole-section">
+      <div
+        class="col s6 checker-box"
+        style="padding: 0px 0px 0px 50px">
+        <div class="row">
+          <div class="col s10">
+            <h3 class="main-headings">Symptom Checker</h3>
+            <p class="symptom-desc">
+              Tell us about your symptoms, one at a time.
+            </p>
+            <div
+              style="width: 100%"
+              class="">
+              <div class="input-field autocomplete-box">
+                <div class="autocomplete-field">
+                  <i class="material-icons prefix">search</i>
+                  <input
+                    type="text"
+                    id="autocomplete-input"
+                    class="autocomplete"
+                    placeholder="Enter your symptoms" />
+                </div>
+                <div class="autocomplete-button">
+                  <a class="waves-effect waves-light btn-small z-depth-0">✔️</a>
+                </div>
+              </div>
+            </div>
+            <div class="symptom_box z-depth-1">
+              <h5 class="symptom-sub-title">Your Symptoms</h5>
+              <div
+                id="symptoms"
+                class=""></div>
+            </div>
+            <div class="right-align">
+              <a
+                class="waves-effect waves-light btn-large blue"
+                style="
+                  border-radius: 5px;
+                  padding-left: 35px;
+                  padding-right: 35px;
+                "
+                >Next</a
+              >
+            </div>
           </div>
-        </div>
-        <div
-          class=""
-          style="padding: 20px 0px 40px 0px">
-          <h5 class="symptom-sub-title">Your Symptoms</h5>
-          <div
-            id="symptoms"
-            class="">
-            <div class="chip">
-              🤒 Fever
-              <i class="close material-icons">close</i>
-            </div>
-            <div class="chip">
-              🤧 Cough
-              <i class="close material-icons">close</i>
-            </div>
-            <div class="chip">
-              💩 Diarrhea
-              <i class="close material-icons">close</i>
-            </div>
-            <div class="chip">
-              😵‍💫 redness of eyes
-              <i class="close material-icons">close</i>
-            </div>
-          </div>
-        </div>
-        <div class="right-align">
-          <a
-            class="waves-effect waves-light btn-large blue"
-            style="border-radius: 5px; padding-left: 35px; padding-right: 35px"
-            >Next</a
-          >
         </div>
       </div>
-    </div>
 
-    <div
-      class="col s6"
-      style="padding: 0% 7% 0% 5%">
-      <h3 class="main-headings">Possible Diagnosis</h3>
-      <div class="">
-        <div
-          class="card grey lighten-3 hoverable"
-          style="margin: 0% 10% 5% 0%; border-radius: 15px">
-          <div class="card-content row">
-            <span class="card-title col s6">Diagnosis</span>
-            <div class="right-align col s6">
-              <i class="material-icons">close</i>
+      <div class="col s6">
+        <div class="row">
+          <div class="col s2"></div>
+          <div class="col s10 diag-box">
+            <h5
+              class="main-headings"
+              style="margin-left: 16px">
+              Possible Diagnosis
+            </h5>
+            <div class="diagnosis-body">
+              <!-- <div class="card grey lighten-3 z-depth-0">
+            <div class="card-content row">
+              <span class="card-title col s6">Diagnosis</span>
+              <div class="right-align col s6">
+                <i class="material-icons">close</i>
+              </div>
+
+              <p class="col s12">
+                You might have a rotavirus infection called Rotavirus. Other
+                VIRUSES or rhinovirus may also cause these symptoms.
+              </p>
             </div>
-
-            <p class="col s12">
-              You might have a rotavirus infection called Rotavirus. Other
-              VIRUSES or rhinovirus may also cause these symptoms.
-            </p>
-          </div>
-        </div>
-        <div
-          class="card grey lighten-3 hoverable"
-          style="margin: 0% 10% 5% 0%; border-radius: 15px">
-          <div class="card-content row">
-            <span class="card-title col s6">Diagnosis</span>
-            <div class="right-align col s6">
-              <i class="material-icons">close</i>
+          </div> -->
             </div>
-
-            <p class="col s12">
-              You might have a rotavirus infection called Rotavirus. Other
-              VIRUSES or rhinovirus may also cause these symptoms.
+            <p class="disclaimer">
+              *Disclaimer this is not professional medical advice <br />
+              Please Contact a Medical Professional for more information
             </p>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </main>
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
