@@ -1,225 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  
-  <style>
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    .profile-container {
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 20px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .profile-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .profile-header h1 {
-      margin: 0;
-      font-weight: 500;
-    }
-    .profile-info {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .profile-info div {
-      display: flex;
-      justify-content: space-between;
-    }
-    .update-btn {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 16px;
-    }
-    .update-btn:hover {
-      background-color: #0056b3;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      justify-content: center;
-      align-items: center;
-    }
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      max-width: 500px;
-      width: 100%;
-    }
-    .close-btn {
-      background-color: #dc3545;
-      color: #fff;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .close-btn:hover {
-      background-color: #c82333;
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-    .modal-header h2 {
-      margin: 0;
-      font-weight: 500;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 15px;
-    }
-    .form-group label {
-      margin-bottom: 5px;
-      font-weight: 500;
-    }
-    .form-group input {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    .save-btn {
-      background-color: #28a745;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      font-size: 16px;
-    }
-    .save-btn:hover {
-      background-color: #218838;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <title>MedMinder</title>
+    <!-- Materialize CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+      rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet" />
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/profile.css" />
 
-    <div id="navbar-container"></div>  
-  <div class="profile-container">
-    <div class="profile-header">
-      <h1>User Profile</h1>
-      <button class="update-btn" id="openModal"><i class="fas fa-edit"></i> Update</button>
-    </div>
-    <div class="profile-info">
-      <div><span>First Name:</span> <span id="display_first_name"></span></div>
-      <div><span>Last Name:</span> <span id="display_last_name"></span></div>
-      <div><span>Email:</span> <span id="display_email"></span></div>
-    </div>
-    <button id="logoutButton">Logout</button>
-  </div>
-
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Edit Profile</h2>
-        <button class="close-btn" id="closeModal">&times;</button>
+  </head>
+  <body>
+      <div id="navbar-container"></div>
+      <br>
+      <div class="profile-container" style="width: 50%;">
+        <div class="profile-header">
+          <h4>User Profile</h1>
+          <button class="update-btn" id="openModal"><i class="fas fa-edit"></i> Update</button>
+        </div>
+        <div class="profile-info">
+          <div><span>First Name:</span> <span id="display_first_name"></span></div>
+          <div><span>Last Name:</span> <span id="display_last_name"></span></div>
+          <div><span>Email:</span> <span id="display_email"></span></div>
+        </div>
+        <br><br>
+        <button class="lg-btn" id="logoutButton"><i class="fas fa-sign-out-alt"></i>Logout</button>
       </div>
-      <form id="profileForm">
-        <div class="form-group">
-          <label for="user_first_name">First Name:</label>
-          <input type="text" id="user_first_name" name="user_first_name">
+      <div class="modal" id="modal" style="padding-top: 20px;margin-top: 50px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h6>Edit Profile</h2>
+            <button class="close-btn" id="closeModal">&times;</button>
+          </div>
+          <form id="profileForm">
+            <div class="form-group">
+              <label for="user_first_name">First Name:</label>
+              <input type="text" id="user_first_name" name="user_first_name">
+            </div>
+            <div class="form-group">
+              <label for="user_last_name">Last Name:</label>
+              <input type="text" id="user_last_name" name="user_last_name">
+            </div>
+            <div class="form-group">
+              <label for="user_email">Email:</label>
+              <input type="email" id="user_email" name="user_email">
+            </div>
+            <button type="submit" class="save-btn"><i class="fas fa-save"></i> Save</button>
+          </form>
         </div>
-        <div class="form-group">
-          <label for="user_last_name">Last Name:</label>
-          <input type="text" id="user_last_name" name="user_last_name">
-        </div>
-        <div class="form-group">
-          <label for="user_email">Email:</label>
-          <input type="email" id="user_email" name="user_email">
-        </div>
-        <button type="submit" class="save-btn"><i class="fas fa-save"></i> Save</button>
-      </form>
-    </div>
-  </div>
-  <script src="../../js/logout.js"></script>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Fetch user data and populate the profile info
-      fetch('/profile/details')
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('display_first_name').textContent = data.user_first_name;
-          document.getElementById('display_last_name').textContent = data.user_last_name;
-          document.getElementById('display_email').textContent = data.user_email;
-          document.getElementById('user_first_name').value = data.user_first_name;
-          document.getElementById('user_last_name').value = data.user_last_name;
-          document.getElementById('user_email').value = data.user_email;
-        })
-        .catch(error => console.error('Error fetching user data:', error));
-
-      // Open modal
-      document.getElementById('openModal').addEventListener('click', function() {
-        document.getElementById('modal').style.display = 'flex';
-      });
-
-      // Close modal
-      document.getElementById('closeModal').addEventListener('click', function() {
-        document.getElementById('modal').style.display = 'none';
-      });
-
-      // Handle form submission
-      document.getElementById('profileForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-
-        const formData = new FormData(this);
-        const data = {};
-        formData.forEach((value, key) => (data[key] = value));
-
-        fetch('/profile/updateprofile', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        })
-        .then(response => response.json())
-        .then(result => {
-          alert(result.message);
-          // Update the displayed profile info
-          document.getElementById('display_first_name').textContent = data.user_first_name;
-          document.getElementById('display_last_name').textContent = data.user_last_name;
-          document.getElementById('display_email').textContent = data.user_email;
-          // Close the modal
-          document.getElementById('modal').style.display = 'none';
-        })
-        .catch(error => console.error('Error updating profile:', error));
-      });
-    });
-  </script>
-</body>
+      </div>
+      <script src="../../js/logout.js"></script>
+      <script src="../../js/navbar.js"></script>
+      <script src="../../js/profile.js"></script>
+  </body>
 </html>
