@@ -18,63 +18,70 @@ document.addEventListener('DOMContentLoaded', function() {
             if (notificationsDropdown) {
                 console.log('Dropdown element found');
                 fetch('http://localhost:3000/notify')
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Data fetched:', data);
-                    let notifications = data.notifications;
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Data fetched:', data);
+                        let notifications = data.notifications;
 
-                    // Sort notifications to have non-Taken ones at the top
-                    notifications.sort((a, b) => {
-                        if (a.status === 'Not taken' && b.status !== 'Not taken') return -1;
-                        if (a.status !== 'Not taken' && b.status === 'Not taken') return 1;
-                        return 0;
+                        // Sort notifications to have non-Taken ones at the top
+                        notifications.sort((a, b) => {
+                            if (a.status === 'Not taken' && b.status !== 'Not taken') return -1;
+                            if (a.status !== 'Not taken' && b.status === 'Not taken') return 1;
+                            return 0;
+                        });
+
+                        notificationsDropdown.innerHTML = ''; // Clear existing content
+
+                        notifications.forEach((notification, index) => {
+                            const notificationItem = document.createElement('li');
+                            notificationItem.innerHTML = `
+                                <div class="notification">
+                                    <div class="notification-header">
+                                        <i class="material-icons">notifications_none</i>
+                                        <span>${notification.medication_name}</span>
+                                    </div>
+                                    <div class="notification-body">
+                                        <span>${notification.date} at ${notification.time}</span>
+                                    </div>
+                                    <div class="status ${notification.status.toLowerCase().replace(' ', '-')}">
+                                        <i class="material-icons">
+                                            ${notification.status === 'Taken' ? 'check_circle' : notification.status === 'Skipped' ? 'cancel' : 'notifications_none'}
+                                        </i>
+                                        <span>${notification.status}</span>
+                                    </div>
+                                    ${notification.status === 'Not taken' ? `
+                                    <div class="notification-actions">
+                                        <button onclick="handleMedicationAction('taken', '${notification._id}', ${index})">Taken</button>
+                                        <button onclick="handleMedicationAction('skipped', '${notification._id}', ${index})">Skipped</button>
+                                    </div>
+                                    ` : ''}
+                                </div>
+                            `;
+                            notificationsDropdown.appendChild(notificationItem);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching notifications:', error);
+                        error.text().then(errorMessage => console.error('Server error response:', errorMessage));
                     });
-
-                    notificationsDropdown.innerHTML = ''; // Clear existing content
-
-                    notifications.forEach((notification, index) => {
-                        const notificationItem = document.createElement('li');
-                        notificationItem.innerHTML = `
-                            <div class="notification">
-                                <div class="notification-header">
-                                    <i class="material-icons">notifications_none</i>
-                                    <span>${notification.medication_name}</span>
-                                </div>
-                                <div class="notification-body">
-                                    <span>${notification.date} at ${notification.time}</span>
-                                </div>
-                                <div class="status ${notification.status.toLowerCase().replace(' ', '-')}">
-                                    <i class="material-icons">
-                                        ${notification.status === 'Taken' ? 'check_circle' : notification.status === 'Skipped' ? 'cancel' : 'notifications_none'}
-                                    </i>
-                                    <span>${notification.status}</span>
-                                </div>
-                                ${notification.status === 'Not taken' ? `
-                                <div class="notification-actions">
-                                    <button onclick="handleMedicationAction('taken', '${notification._id}', ${index})">Taken</button>
-                                    <button onclick="handleMedicationAction('skipped', '${notification._id}', ${index})">Skipped</button>
-                                </div>
-                                ` : ''}
-                            </div>
-                        `;
-                        notificationsDropdown.appendChild(notificationItem);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching notifications:', error);
-                });
             }
 
             // Function for handling medication actions
             window.handleMedicationAction = function(action, medicationId, index) {
-                fetch(`http://localhost:3000/notify/${action}/${medicationId}`, {
+                console.log(`Handling action: ${action} for medicationId: ${medicationId} at index: ${index}`);
+                fetch(`http://localhost:3000/notify/taken/${medicationId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ status: action })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw response;
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     console.log('Action response:', data);
 
@@ -104,18 +111,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Error handling action:', error);
+                    error.text().then(errorMessage => console.error('Server error response:', errorMessage));
                 });
             };
         });
-        
-        // Fetch user data
-      fetch('/profile/details')
-      .then(response => response.json())
-      .then(data => {
-        const firstName = data.user_first_name || '';
-        const lastName = data.user_last_name || '';
-        const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
-        document.getElementById('initialsCircle').textContent = initials;
-      })
-      .catch(error => console.error('Error fetching user data:', error));
+
+    // Fetch user data
+    fetch('/profile/details')
+        .then(response => response.json())
+        .then(data => {
+            const firstName = data.user_first_name || '';
+            const lastName = data.user_last_name || '';
+            const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+            document.getElementById('initialsCircle').textContent = initials;
+        })
+        .catch(error => console.error('Error fetching user data:', error));
 });
