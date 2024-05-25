@@ -10,11 +10,16 @@ const register = async (req, res, next) => {
     user_password,
     user_first_name,
     user_last_name,
-    user_gender,
-    user_medication,
+    user_gender
   } = req.body;
 
   try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ user_email });
+    if (existingUser) {
+      return res.status(404).json({ statusCode: 404, message: 'User already exists' });
+    }
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(user_password, salt);
 
@@ -23,11 +28,11 @@ const register = async (req, res, next) => {
       user_password: hashedPassword,
       user_first_name,
       user_last_name,
-      user_gender,
-      user_medication,
+      user_gender
     });
+
     await user.save();
-    res.json({ message: 'Registration successful' });
+    res.status(200).json({ statusCode: 200, message: 'Registration successful' });
   } catch (error) {
     next(error);
   }
