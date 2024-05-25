@@ -109,7 +109,7 @@ const resetPasswordPost = async function(req, res) {
     }
 
     const result = await user.updatePassword(newPassword);
-    console.log(result);
+    res.status(200).json({ statusCode: 200, message: result });
     
   } catch (err) {
     handleErrorResponse(res, err, 'Error getting reset password link:');

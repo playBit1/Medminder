@@ -1,31 +1,39 @@
 function forgotPasswordForm(){
   let email = $('#email').val();
-  console.log("Email for Forgot Password Submitted: ", email );
   postForgotPassword(email);
 }
 
 function postForgotPassword(email) {
   let data={};
   data.email = email;
+  alert("The form is submitted. Please wait for a few seconds.");
   $.ajax({
     url: '/forgotPassword/sendEmail',
     data: data,
     type: 'POST',
     success: (result) => {
-      console.log(result);
+      alert(result.message);
+      window.location.reload();
     },
     error: (xhr, status, error) => {
-      console.error('Error submitting data:', error);
+      let errorMessage = "Error submitting: ";
+      try {
+        let response = JSON.parse(xhr.responseText);
+        if (response.message) {
+          errorMessage += response.message;
+        } else {
+          errorMessage += xhr.responseText;
+        }
+      } catch (e) {
+        errorMessage += xhr.responseText;
+      }
+      alert(errorMessage);
     }
   });
 }
 
-$(document).ready(function(){
-  console.log('Click Event Test1');
-    
+$(document).ready(function(){    
   $('#emailSubmit').click(()=>{
-    console.log('Click Event Test2');
-      forgotPasswordForm();      
+    forgotPasswordForm();      
   });
-  
 });

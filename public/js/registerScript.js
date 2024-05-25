@@ -1,4 +1,3 @@
-
 function registerForm() {
   let formData = {};
   formData.user_email = $('#email').val();
@@ -6,39 +5,72 @@ function registerForm() {
   formData.user_first_name = $('#first_name').val();
   formData.user_last_name = $('#last_name').val();
   formData.user_gender = $('#gender').val();
-      
-  console.log("Form Data Submitted: ", formData);
+  const confirmPassword = $('#confirm_password').val();
+
+  if (!validateEmail(formData.user_email)) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+
+  if (formData.user_password !== confirmPassword) {
+    alert('Passwords do not match.');
+    return;
+  }
+
+  if (formData.user_password.length < 6) {
+    alert('Password should be at least 6 characters long.');
+    return;
+  }
+
+  if (formData.user_email == "" || 
+      formData.user_password == "" || 
+      formData.user_first_name == "" ||
+      formData.user_last_name == "" || 
+      formData.user_gender == ""
+  ) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
   postRegister(formData);
 };
 
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
+
 function postRegister(user) {
+  console.log(user);
   $.ajax({
-      url: '/auth/register',
-      data: user,
-      type: 'POST',
-      success: (result) => {
-          console.log(result.data);
-          console.log('Data submitted successfully:', user); // Log the submitted data
-          console.log('Server response:', result.data);
-          window.location.href = '/dashboard';
-      },
-      error: (xhr, status, error) => {
-          console.error('Error submitting data:', error); // Log any errors
-          // Handle the error
+    url: '/auth/register',
+    data: JSON.stringify(user),
+    type: 'POST',
+    contentType: 'application/json',
+    dataType: 'json',
+    success: (result) => {
+      alert(result.message);
+      window.location.href = '/user/login';
+    },
+    error: (xhr, status, error) => {
+      let errorMessage = "Error registering: ";
+      try {
+        let response = JSON.parse(xhr.responseText);
+        if (response.message) {
+          errorMessage += response.message;
+        } else {
+          errorMessage += xhr.responseText;
+        }
+      } catch (e) {
+        errorMessage += xhr.responseText;
       }
+      alert(errorMessage);
+    }
   });
-};
+}
 
-
-$(document).ready(function(){
-  console.log('Click Event Test1');
-  //$('.modal').modal();
-  //$('#clickMeButton').click(()=>{});
-  
-  $('#registerSubmit').click(()=>{
-    console.log('Click Event Test2');
-      registerForm();
-      
+$(document).ready(function() {
+  $('#submitRegister').click(() => {
+    registerForm();
   });
-  
 });

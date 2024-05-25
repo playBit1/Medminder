@@ -138,24 +138,6 @@ const editMedication = async () => {
     }
 }
 
-// testing purposes: to be deleted
-const login = () => {
-    const data = {
-        user_email : "john.doe@example.com", 
-        user_password: "password123"
-    };
-
-    $.post('/auth/login', data, async (response) => {
-        if (response.statusCode == 201) {
-            console.log('Medication added successfully:', response.data);
-            await alert('Medication added successfully');
-        } else {
-            console.error('Error adding medication:', response.message);
-            await alert('Error adding medication');
-        }
-    });
-}
-
 const downloadpdf = () => {
     var doc = new jsPDF();
 
@@ -268,7 +250,6 @@ $(document).ready(function() {
     $('#downloadbtn').click(()=>{ 
         downloadpdf().save("medication_records.pdf");
     });
-    login();    // to be deleted
     getMedications();
     $('#addModal #formSubmit').click(()=>{ 
         addNewMedication();
