@@ -37,7 +37,6 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/notify', notificationsRouter);
 app.use('/profile', profileRouter);
 
-// Initialize socket.io
 socketNotifications(io);
 
 server.listen(3000, () => {
