@@ -20,11 +20,20 @@ module.exports = (io) => {
         users.forEach(async (user) => {
           const notifications = user.user_notifications;
           if (notifications && notifications instanceof Map) {
-            const upcomingNotifications = Array.from(notifications.values()).filter(notification => {
-              const notificationTime = new Date(`${notification.date}T${notification.time}`);
+            const upcomingNotifications = Array.from(
+              notifications.values()
+            ).filter((notification) => {
+              const notificationTime = new Date(
+                `${notification.date}T${notification.time}`
+              );
               const timeDiff = (notificationTime - now) / 1000 / 60; // difference in minutes
               const notificationKey = `${user._id}-${notification.date}-${notification.time}`; // Unique key for each notification
-              return notification.status === 'Not taken' && timeDiff <= 2 && timeDiff >= 0 && !sentNotifications.has(notificationKey);
+              return (
+                notification.status === 'Not taken' &&
+                timeDiff <= 2 &&
+                timeDiff >= 0 &&
+                !sentNotifications.has(notificationKey)
+              );
             });
 
             if (upcomingNotifications.length > 0) {
@@ -32,7 +41,7 @@ module.exports = (io) => {
               console.log('Notifications emitted:', upcomingNotifications); // Log emitted notifications
 
               // Add the notifications to the set of sent notifications
-              upcomingNotifications.forEach(notification => {
+              upcomingNotifications.forEach((notification) => {
                 const notificationKey = `${user._id}-${notification.date}-${notification.time}`;
                 sentNotifications.add(notificationKey);
               });

@@ -54,7 +54,7 @@ const login = async (req, res, next) => {
       expiresIn: '1 hour',
     });
 
-    res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour
+    res.cookie('token', token, { httpOnly: true, maxAge: 3600000 }); // 1 hour access
     res.json({ message: 'Login successful' });
   } catch (error) {
     next(error);
@@ -66,6 +66,5 @@ const logout = (req, res) => {
   res.clearCookie('token');
   res.json({ message: 'Logout successful' });
 };
-
 
 module.exports = { register, login, logout };

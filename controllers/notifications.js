@@ -1,6 +1,6 @@
 const User = require('../models/User');
 
-// Fetch all notifications for a user
+// Fetch all notifications for the user
 const getNotifications = async (req, res, next) => {
   const userId = req.user._id; // Assuming userId is set in req by auth middleware
   try {
@@ -15,12 +15,16 @@ const getNotifications = async (req, res, next) => {
         } else if (typeof user.user_notifications === 'object') {
           notifications = Object.values(user.user_notifications);
         } else {
-          throw new Error('user_notifications is not a recognized iterable type');
+          throw new Error(
+            'user_notifications is not a recognized iterable type'
+          );
         }
 
         res.json({ notifications });
       } else {
-        res.status(404).json({ message: 'No notifications found for the user' });
+        res
+          .status(404)
+          .json({ message: 'No notifications found for the user' });
       }
     } else {
       res.status(404).json({ message: 'User not found' });
@@ -38,17 +42,20 @@ const updateNotificationStatus = async (req, res, next) => {
   console.log(`Received notificationId: ${notificationId}, userId: ${userId}`);
 
   try {
-      const user = await User.findById(userId);
-      if (!user) {
-          console.log('User not found');
-          return res.status(404).json({ message: 'User not found' });
-      }
+    const user = await User.findById(userId);
+    if (!user) {
+      console.log('User not found');
+      return res.status(404).json({ message: 'User not found' });
+    }
 
-      await user.updateNotificationStatus(notificationId, status);
-      res.json({ statusCode: 200, message: 'update notification status success' });
+    await user.updateNotificationStatus(notificationId, status);
+    res.json({
+      statusCode: 200,
+      message: 'update notification status success',
+    });
   } catch (error) {
-      console.error('Error updating notification status:', error);
-      res.status(500).json({ message: 'Failed to update notification status' });
+    console.error('Error updating notification status:', error);
+    res.status(500).json({ message: 'Failed to update notification status' });
   }
 };
 module.exports = {

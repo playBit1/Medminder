@@ -2,7 +2,7 @@
 const express = require('express');
 const { authenticate } = require('../controllers/user_auth');
 const userProfileController = require('../controllers/userProfileController');
-const path = require("path"); // Import the path module
+const path = require('path'); // Import the path module
 const router = express.Router();
 
 router.get('/', authenticate, (req, res) => {
@@ -17,6 +17,10 @@ router.get('/details', authenticate, (req, res) => {
   });
 });
 
-router.post('/updateprofile', authenticate, userProfileController.updateProfile);
+router.post(
+  '/updateprofile',
+  authenticate,
+  userProfileController.updateProfile
+);
 
 module.exports = router;

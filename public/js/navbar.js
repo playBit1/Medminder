@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
         socket.on('notifications', function (notifications) {
           console.log('New notifications received:', notifications);
 
-          // Sort notifications to have non-Taken ones at the top
+          // Sort Notifications to have non-Taken ones at the top
           notifications.sort((a, b) => {
             if (a.status === 'Not taken' && b.status !== 'Not taken') return -1;
             if (a.status !== 'Not taken' && b.status === 'Not taken') return 1;

@@ -1,5 +1,6 @@
 const socketIO = require('socket.io');
 
+//initialize
 const initializeSocket = (server) => {
   const io = socketIO(server);
 

@@ -1,5 +1,6 @@
 /* =============== Landing Page =============== */
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   display: flex;
@@ -24,6 +25,8 @@ nav ul a {
   flex-direction: column;
 }
 
+/* sample */
+
 .main-body {
   flex: 1;
   margin-top: 100px; /* Adjust based on the navbar height */
@@ -33,9 +36,9 @@ nav ul a {
   background-color: white; /* Set your desired background color */
   position: fixed;
   top: 0;
-  padding: 0 20px; 
+  padding: 0 20px;
   width: 100%;
-  z-index: 1000; 
+  z-index: 1000;
 }
 
 .parallax-color {
@@ -65,9 +68,9 @@ nav ul a {
   height: 100%;
   min-height: 100%;
 }
- 
+
 .navbar-custom li a {
-  color: grey;  /* Set the text color  */
+  color: grey; /* Set the text color  */
   font-size: 18px;
   font-weight: 500;
 }
@@ -188,14 +191,14 @@ nav ul a {
 }
 
 hr.solid {
-  border-top: 3px solid #CED8E5;
+  border-top: 3px solid #ced8e5;
 }
 
 .status-ongoing {
-  background-color: rgba(97,162,73, 0.25);
-  color: #61A249;
+  background-color: rgba(97, 162, 73, 0.25);
+  color: #61a249;
   padding: 7px;
-  font-weight:600;
+  font-weight: 600;
   border-radius: 5px;
 }
 
@@ -203,46 +206,47 @@ hr.solid {
   background-color: rgba(76, 158, 188, 0.25);
   color: rgb(76, 158, 188);
   padding: 7px;
-  font-weight:600;
+  font-weight: 600;
   border-radius: 5px;
 }
 
 .status-pending {
-background-color: rgba(255, 191, 0, 0.25);
-color: rgb(255, 191, 0);
-padding: 7px;
-font-weight:600;
-border-radius: 5px;
+  background-color: rgba(255, 191, 0, 0.25);
+  color: rgb(255, 191, 0);
+  padding: 7px;
+  font-weight: 600;
+  border-radius: 5px;
 }
 
 .blue-btn {
-  background-color: #23A6F0;
+  background-color: #23a6f0;
   color: white;
   font-weight: 600;
 }
 
-.edit-icon, .delete-icon {
+.edit-icon,
+.delete-icon {
   cursor: pointer;
 }
 
 .addmed-header {
   padding-bottom: 10px;
   text-align: center;
-  color: #23A6F0;
+  color: #23a6f0;
   font-weight: 600;
 }
 
 .cancel-btn {
   width: 45%;
   background-color: white;
-  color: #23A6F0;
+  color: #23a6f0;
   font-weight: 600;
   margin-top: 10px;
 }
 
 .add-btn {
   width: 45%;
-  background-color: #23A6F0;
+  background-color: #23a6f0;
   color: white;
   font-weight: 600;
   margin-top: 10px;
@@ -250,7 +254,7 @@ border-radius: 5px;
 
 .btn:hover {
   background-color: rgb(35, 166, 240) !important;
-  color: white;    
+  color: white;
 }
 /*======================== NavBar ===============================*/
 /* ====================== Styling for the navbar =================== */
