@@ -65,7 +65,7 @@ describe('Dashboard API Tests', function() {
         if (error) return done(error);
         const parsedBody = JSON.parse(body);
         expect(response.statusCode).to.equal(200);
-        expect(parsedBody.message).to.be.equal("update notification status success");
+        expect(parsedBody.message).to.be.equal("Notification updated successfully");
         generatedId = parsedBody.data;
         done();
       });

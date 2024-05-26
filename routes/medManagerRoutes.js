@@ -5,7 +5,7 @@ var medManagerController = require("../controllers/medManagerController");
 const path = require("path"); // Import the path module
 const { authenticate } = require('../controllers/user_auth');
 
-router.get('/', function (req, res, html) {
+router.get('/', authenticate, function (req, res, html) {
     res.sendFile(path.join(__dirname, '../public/views/med_manager/index.html'));
 });
 

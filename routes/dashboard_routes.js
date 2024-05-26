@@ -4,7 +4,7 @@ const path = require('path');
 var dashboardController = require('../controllers/dashboardController');
 const { authenticate } = require('../controllers/user_auth');
 
-router.get('/', function (req, res) {
+router.get('/', authenticate, function (req, res) {
   res.sendFile(path.join(__dirname, '../public/views/dashboard/index.html'));
 });
 
