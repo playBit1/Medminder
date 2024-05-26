@@ -29,24 +29,3 @@
   display: flex;
   justify-content: space-between;
 }
-.update-btn {
-  background-color: #00aaff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 16px;
-}
-.lg-btn {
-  background-color: #ab1623;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 16px;
-}
-.update-btn:hover {
-  background-color: #00aaff;
-}

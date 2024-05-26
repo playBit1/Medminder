@@ -29,10 +29,10 @@ const getMedications = async () => {
     }
 };
 
-$(document).ready(function() { 
+$(document).ready(function() {
     getNotificationsToCalendar();
-    $('.modal').modal();  
-    
+    $('.modal').modal();
+
     $('#modal-take-button').on('click', async function() {
         buttonAction("Taken");
     });
@@ -43,16 +43,16 @@ $(document).ready(function() {
 });
 
 const getNotificationsToCalendar = async () => {
-    const medications = await getMedications();
+    try {
+        const medications = await getMedications();
 
-    if (medications) {
         const statusColorMap = {
             'Not taken': '#f39c12', // Orange
             'Taken': '#27ae60', // Green
             'Skipped': '#e74c3c' // Red
         };
 
-        const events = Object.values(medications).map(notification => ({
+        const events = medications ? Object.values(medications).map(notification => ({
             title: notification.medication_name,
             start: `${notification.date}T${notification.time}`,
             color: statusColorMap[notification.status] || '#336e03', // Customize the color if needed
@@ -62,7 +62,7 @@ const getNotificationsToCalendar = async () => {
                 date: notification.date,
                 time: notification.time
             }
-        }));
+        })) : [];
 
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -71,11 +71,13 @@ const getNotificationsToCalendar = async () => {
                     titleFormat: { year: 'numeric', month: '2-digit', day: '2-digit' }
                 }
             },
-            events: events, // Add the events to the calendar
+            events: events, 
             eventClick: function(info) {
+                if (!info.event) return;
+
                 // Populate the modal with event details
                 const { title, extendedProps } = info.event;
-                $('#modal-id').text(`${extendedProps._id}`)
+                $('#modal-id').text(`${extendedProps._id}`);
                 $('#modal-medication-name').text(`${title}`);
                 $('#modal-date').text(`${extendedProps.date}`);
                 $('#modal-time').text(`${extendedProps.time}`);
@@ -89,15 +91,15 @@ const getNotificationsToCalendar = async () => {
                     $('#action-buttons').hide();
                     $('#close-button').show();
                 }
-                
+
                 // Open the modal
                 $('#medModal').modal('open');
             }
         });
 
         calendar.render();
-    } else {
-        console.error('Failed to load medications.');
+    } catch (err) {
+        console.error('Error loading medications:', err);
     }
 };
 
@@ -116,4 +118,3 @@ const buttonAction = async (status) => {
         console.error('Error updating notification status:', err);
     }
 };
-
