@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
@@ -12,6 +13,7 @@ const socketNotifications = require('./sockets/notifications');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors({}));
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -37,8 +39,13 @@ app.use('/dashboard', dashboardRoutes);
 app.use('/notify', notificationsRouter);
 app.use('/profile', profileRouter);
 
+
 // Initialize socket.io
 socketNotifications(io);
+
+app.use('/dashboard', dashboardRoutes);
+
+app.use('/forgotPassword', forgotPasswordRoutes);
 
 server.listen(3000, () => {
   runDB();

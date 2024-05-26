@@ -1,13 +1,12 @@
 let symptomList = [];
 
 $(document).ready(function () {
-  $('.modal').modal();
-});
-
-//Initialize the materialize autocomplete with diesease data
-$(document).ready(function () {
   $('input.autocomplete').autocomplete({
     data: autocompleteData,
+    onAutocomplete: function (symptom) {
+      createChip(symptom);
+      $('#autocomplete-input').val('');
+    },
   });
 });
 
@@ -17,13 +16,16 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  const nextButton = document.querySelector('.btn-large.blue');
-  nextButton.addEventListener('click', handleNextButtonClick);
+  const nextButton = document.getElementById('submit-symptoms');
+  nextButton.addEventListener('click', submitSymptoms);
 });
 
 function addSymptomToList(symptom) {
-  symptomList.push(symptom.toLowerCase().replace(/ /g, '_'));
-  console.log(symptomList);
+  const lowercaseSymptom = symptom.toLowerCase().replace(/ /g, '_');
+  if (!symptomList.includes(lowercaseSymptom)) {
+    symptomList.push(lowercaseSymptom);
+    console.log(symptomList);
+  }
 }
 
 function handleInputKeyDown(event) {
@@ -36,28 +38,79 @@ function handleInputKeyDown(event) {
   }
 }
 
-function handleNextButtonClick() {
-  const chipElement = document.querySelector('.chips');
-  const instance = M.Chips.getInstance(chipElement);
-
-  instance.chipsData.forEach((chipData) => {
-    const symptomText = chipData.tag;
-    addSymptomToList(symptomText);
-  });
-
-  console.log(symptomList);
-}
-
 function createChip(symptomText) {
   const chipContainer = document.getElementById('symptoms');
+  const lowercaseSymptom = symptomText.toLowerCase().replace(/ /g, '_');
 
-  const sympChip = ` <div class="chip"> ${
-    diseaseEmojis[symptomText.toLowerCase()]
-      ? diseaseEmojis[symptomText.toLowerCase()]
-      : ''
-  } ${symptomText} <i class="close material-icons">close</i> </div>`;
+  if (!symptomList.includes(lowercaseSymptom)) {
+    const sympChip = document.createElement('div');
+    sympChip.classList.add('chip');
+    sympChip.textContent = `${
+      diseaseEmojis[symptomText.toLowerCase()] || ''
+    } ${symptomText}`;
 
-  chipContainer.innerHTML += sympChip;
+    const closeIcon = document.createElement('i');
+    closeIcon.classList.add('close', 'material-icons');
+    closeIcon.textContent = 'close';
+    closeIcon.addEventListener('click', () => {
+      chipContainer.removeChild(sympChip);
+      symptomList = symptomList.filter(
+        (symptom) => symptom !== lowercaseSymptom
+      );
+    });
+
+    sympChip.appendChild(closeIcon);
+    chipContainer.appendChild(sympChip);
+    addSymptomToList(lowercaseSymptom);
+  }
+}
+
+function createDiagnosis(result) {
+  const diagnosisContainer = document.getElementById('diagnosis-results');
+  const diagnosisCard = document.createElement('div');
+  diagnosisCard.classList.add('card', 'grey', 'lighten-3', 'z-depth-0');
+
+  const cardContent = document.createElement('div');
+  cardContent.classList.add('card-content', 'row');
+
+  const cardTitle = document.createElement('span');
+  cardTitle.classList.add('card-title', 'col', 's6');
+  cardTitle.textContent = 'Diagnosis';
+
+  const closeIcon = document.createElement('div');
+  closeIcon.classList.add('right-align', 'col', 's6');
+  const icon = document.createElement('i');
+  icon.classList.add('material-icons');
+  icon.textContent = 'close';
+  closeIcon.appendChild(icon);
+
+  const diagnosisText = document.createElement('p');
+  diagnosisText.classList.add('col', 's12');
+  diagnosisText.textContent = result['disease'];
+
+  cardContent.appendChild(cardTitle);
+  cardContent.appendChild(closeIcon);
+  cardContent.appendChild(diagnosisText);
+  diagnosisCard.appendChild(cardContent);
+  diagnosisContainer.appendChild(diagnosisCard);
+}
+
+function submitSymptoms() {
+  const data = { symptoms: symptomList };
+
+  $.ajax({
+    url: 'http://20.92.138.252:3004/predict',
+    type: 'POST',
+    contentType: 'application/json',
+    data: JSON.stringify(data),
+    success: function (result) {
+      console.log('Success:', result);
+      createDiagnosis(result);
+    },
+    error: function (error) {
+      console.error('Error:', error);
+    },
+  });
 }
 
 const diseaseEmojis = {
