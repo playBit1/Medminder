@@ -78,7 +78,6 @@ describe('MedManager API Tests', function() {
         expect(response.statusCode).to.equal(200);
         expect(parsedBody.message).to.be.equal("Medication created successfully");
         generatedId = parsedBody.data;
-        console.log('generated inside id: ' + generatedId);
 
         done();
       });
@@ -88,7 +87,6 @@ describe('MedManager API Tests', function() {
 
   describe('POST /medManager/editMed', function() {
     it('should edit a new medication', function(done) {
-      console.log('generated id: ' + generatedId);
       const newMed = {
         _id: generatedId,
         medication_name: 'Test Med',
