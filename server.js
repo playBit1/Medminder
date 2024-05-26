@@ -4,7 +4,10 @@ const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
 const cookieParser = require('cookie-parser');
+const socketIo = require('socket.io');
+const io = socketIo(server);
 const { runDB } = require('./dbConnection');
+const socketNotifications = require('./sockets/notifications');
 
 // Middleware
 app.use(express.json());
@@ -26,6 +29,8 @@ const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const dashboardRoutes = require('./routes/dashboard_routes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
+const notificationsRouter = require('./routes/notifications');
+const profileRouter = require('./routes/profile');
 
 app.use('/medManager', medManagerRoutes);
 
@@ -36,7 +41,10 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 
 app.use('/dashboard', dashboardRoutes);
+app.use('/notify', notificationsRouter);
+app.use('/profile', profileRouter);
 
+socketNotifications(io);
 app.use('/forgotPassword', forgotPasswordRoutes);
 
 server.listen(3000, () => {
