@@ -1,9 +1,8 @@
 .whole-section {
-  margin: 7%;
+  margin: 7% 15%;
   padding-right: 30px;
-  border: 2px solid;
   border-radius: 28px;
-  background: #f8fbfe;
+  background: #f8f8f8;
 }
 
 .left-side {
@@ -20,8 +19,9 @@
 .symptom-desc {
   font-family: 'Montserrat', sans-serif;
   font-optical-sizing: auto;
-  font-weight: 400;
-  font-size: 1.25rem;
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 5px;
 }
 
 .symptom-sub-title {
@@ -34,7 +34,7 @@
 /* Checker section Styling */
 
 .checker-box {
-  padding-left: 50px;
+  padding-left: 10px;
 }
 
 .autocomplete-content {
@@ -43,11 +43,12 @@
 }
 
 .symptom_box {
-  padding: 0px 0px 30px 20px;
+  padding: 0px 0px 30px 15px;
   margin: 0px 0px 30px 0px;
-  border: 0.5px solid;
+  height: 278px;
+  border: 1px solid #dadada;
   border-radius: 12px;
-  background: #f1f8fe;
+  background: white;
 }
 
 .input-field input {
@@ -73,6 +74,8 @@
   border: 1px solid #a6a6a8b6;
   border-radius: 12px;
   display: flex;
+  background: white;
+  margin-top: 0px;
 }
 
 .autocomplete-field {
@@ -100,13 +103,56 @@
   margin-top: 30px;
   margin-left: 50px;
   margin-bottom: 10px;
-  border: 1px solid;
+  border: 1px solid #dadada;
   border-radius: 28px;
   background: white;
 }
 
 .diagnosis-body {
-  height: 70%;
+  height: 75%;
+  overflow-y: auto;
+}
+
+.diagnosis-items-container {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.diagnosis-item {
+  background: #f4fafa;
+  padding-left: 10px;
+  border-radius: 12px;
+  padding-bottom: 1px;
+  margin: 0px 10px 10px 10px;
+}
+
+.diagnosis-item-head {
+  display: flex;
+  justify-content: space-between;
+}
+
+.diagnosis-item-heading {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 10px 0px 0px 0px;
+}
+
+.diagnosis-item-button {
+  margin: 11px 0px;
+  padding-right: 10px;
+  cursor: pointer;
+}
+
+.diagnosis-item-body-disease {
+  padding: 0px;
+  font-size: 17px;
+  margin: 0px;
+}
+
+.diagnosis-item-body-symptoms {
+  padding: 10px 0px 10px 0px;
+  font-size: 15px;
+  margin: 0px;
 }
 
 .disclaimer {
