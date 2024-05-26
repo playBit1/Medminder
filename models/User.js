@@ -176,7 +176,7 @@ userSchema.methods.addNewMedication = async function (newMedication) {
     this.generateNotifications(newMedication, newMedIdString);
     
     await this.save();
-    return { message: 'Medication added successfully' };
+    return { data: newMedIdString, message: 'Medication added successfully' };
   } catch (error) {
     throw error;
   }
