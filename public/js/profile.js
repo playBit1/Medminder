@@ -1,59 +1,68 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // Fetch User data and populate the profile info
-  fetch('/profile/details')
-    .then((response) => response.json())
-    .then((data) => {
-      document.getElementById('display_first_name').textContent =
-        data.user_first_name;
-      document.getElementById('display_last_name').textContent =
-        data.user_last_name;
-      document.getElementById('display_email').textContent = data.user_email;
-      document.getElementById('user_first_name').value = data.user_first_name;
-      document.getElementById('user_last_name').value = data.user_last_name;
-      document.getElementById('user_email').value = data.user_email;
-    })
-    .catch((error) => console.error('Error fetching user data:', error));
+$(document).ready(function() {
+  // Initialize the modal
+  $('.modal').modal();
 
-  // Open modal
-  document.getElementById('openModal').addEventListener('click', function () {
-    document.getElementById('modal').style.display = 'flex';
+  // Fetch User data and populate the profile info
+  $.get('/profile/details', function(data) {
+    $('#display_first_name').text(data.user_first_name);
+    $('#display_last_name').text(data.user_last_name);
+    $('#display_email').text(data.user_email);
+    $('#user_first_name').val(data.user_first_name);
+    $('#user_last_name').val(data.user_last_name);
+    $('#user_email').val(data.user_email);
+
+    // Activate labels if the input fields have values
+    if (data.user_first_name) {
+      $('label[for="user_first_name"]').addClass('active');
+    }
+    if (data.user_last_name) {
+      $('label[for="user_last_name"]').addClass('active');
+    }
+    if (data.user_email) {
+      $('label[for="user_email"]').addClass('active');
+    }
+  }).fail(function(error) {
+    console.error('Error fetching user data:', error);
   });
 
-  // Close modal
-  document.getElementById('closeModal').addEventListener('click', function () {
-    document.getElementById('modal').style.display = 'none';
+  // Open modal
+  $('#openModal').on('click', function() {
+    $('#profileModal').modal('open');
   });
 
   // Handle form submission
-  document
-    .getElementById('profileForm')
-    .addEventListener('submit', function (event) {
-      event.preventDefault();
+  $('#profileForm').on('submit', function(event) {
+    event.preventDefault();
 
-      const formData = new FormData(this);
-      const data = {};
-      formData.forEach((value, key) => (data[key] = value));
+    const data = {
+      user_first_name: $('#user_first_name').val(),
+      user_last_name: $('#user_last_name').val(),
+      user_email: $('#user_email').val()
+    };
 
-      fetch('/profile/updateprofile', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((result) => {
-          alert(result.message);
-          // Update the displayed profile info
-          document.getElementById('display_first_name').textContent =
-            data.user_first_name;
-          document.getElementById('display_last_name').textContent =
-            data.user_last_name;
-          document.getElementById('display_email').textContent =
-            data.user_email;
-          // Close the modal
-          document.getElementById('modal').style.display = 'none';
-        })
-        .catch((error) => console.error('Error updating profile:', error));
+    $.ajax({
+      url: '/profile/updateprofile',
+      method: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify(data),
+      success: function(result) {
+        alert(result.message);
+        // Update the displayed profile info
+        $('#display_first_name').text(data.user_first_name);
+        $('#display_last_name').text(data.user_last_name);
+        $('#display_email').text(data.user_email);
+
+        // Prevent value and label overlap
+        $('label[for="user_first_name"]').addClass('active');
+        $('label[for="user_last_name"]').addClass('active');
+        $('label[for="user_email"]').addClass('active');
+
+        // Close the modal
+        $('#profileModal').modal('close');
+      },
+      error: function(error) {
+        console.error('Error updating profile:', error);
+      }
     });
+  });
 });

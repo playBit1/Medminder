@@ -1,12 +1,19 @@
 document.getElementById('logoutButton').addEventListener('click', async () => {
-  const response = await fetch('/auth/logout', {
-    method: 'POST',
-    credentials: 'same-origin',
-  });
+  const userConfirmed = confirm('Are you sure you want to log out?');
 
-  if (response.ok) {
-    window.location.href = '/'; // Redirect to login page after Logout
+  if (userConfirmed) {
+    const response = await fetch('/auth/logout', {
+      method: 'POST',
+      credentials: 'same-origin',
+    });
+
+    if (response.ok) {
+      alert("Logout successfully.");
+      window.location.href = '/';
+    } else {
+      alert('Logout failed');
+    }
   } else {
-    alert('Logout failed');
+    alert("Logout canceled.");
   }
 });
