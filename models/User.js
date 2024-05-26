@@ -252,7 +252,7 @@ userSchema.methods.updateNotificationStatus = async function (notificationId, st
     this.user_notifications.set(key, notification);
     await this.save();
     
-    return { message: 'Notification updated successfully' };
+    return 'Notification updated successfully';
   } catch (error) {
     throw error;
   }

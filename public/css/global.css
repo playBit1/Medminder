@@ -252,3 +252,151 @@ border-radius: 5px;
   background-color: rgb(35, 166, 240) !important;
   color: white;    
 }
+/*======================== NavBar ===============================*/
+/* ====================== Styling for the navbar =================== */
+nav {
+  background-color: #ffffff; /* White background */
+  box-shadow: none; /* Remove default shadow */
+}
+nav .brand-logo {
+  color: #0277bd; /* Custom blue color for the logo text */
+  font-size: 24px;
+  font-weight: 500;
+}
+nav .nav-wrapper {
+  padding: 0 20px; /* Padding on the sides */
+}
+nav ul a {
+  color: #0277bd; /* Blue color for the nav items */
+  font-size: 16px;
+  font-weight: 400;
+}
+nav ul a:hover {
+  background-color: transparent; /* Remove default hover background */
+  color: #01579b; /* Darker blue on hover */
+}
+.notification-bell a i {
+  color: #e57373; /* Red color for the bell icon */
+}
+.notification-bell .badge {
+  font-size: 0.8rem; /* Smaller badge size */
+  padding: 2px 5px; /* Padding inside the badge */
+  top: 0;
+  right: 5px;
+}
+.notification-bell .dropdown-content {
+  width: 300px;
+}
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.notification-item button {
+  margin-left: 5px;
+}
+.sidenav-trigger i {
+  color: blue;
+}
+
+/**===========================NavbarStylingEnds==============================*/
+/*==== notification===*/
+.notification {
+  width: 320px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.notification-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.notification-header i {
+  margin-right: 10px;
+  color: grey;
+}
+.notification-header span {
+  font-size: 14px;
+  color: #555;
+}
+.notification-body {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+.notification-body i {
+  margin-right: 5px;
+  color: grey;
+}
+.notification-body span {
+  font-size: 14px;
+  color: grey;
+}
+.actions {
+  display: flex;
+  justify-content: center; /* Center the buttons */
+  margin-top: 10px;
+}
+.actions button {
+  margin: 0 5px; /* Reduce the margin to bring the buttons closer */
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.take-btn {
+  background: #00aaff;
+  color: white;
+}
+.skip-btn {
+  background: #ff4d4d;
+  color: white;
+}
+.status {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+}
+.status i {
+  margin-right: 5px;
+}
+.status span {
+  font-size: 14px;
+}
+.taken {
+  color: green;
+}
+.skipped {
+  color: red;
+}
+.dropdown-content {
+  width: 320px !important;
+  max-height: 400px;
+  overflow-y: auto;
+}
+/*========================profile=============================================*/
+.right {
+  display: flex;
+  align-items: center;
+}
+.profile-initials {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+}
+.initials-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #cac4c2;
+  color: #0433f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 500;
+  margin-left: 10px;
+}
