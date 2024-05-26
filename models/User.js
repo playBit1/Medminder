@@ -13,47 +13,46 @@ const userSchema = new mongoose.Schema({
   },
   user_medication: {
     type: Map,
-    of: new mongoose.Schema({
-      medication_name: { type: String, required: true },
-      dosage: { type: String, required: true },
-      frequency: {
-        type: String,
-        enum: [
-          'Once a day',
-          'Twice a day',
-          'Three times a day',
-          'Four times a day',
-        ],
-        default: 'Once a day',
+    of: new mongoose.Schema(
+      {
+        medication_name: { type: String, required: true },
+        dosage: { type: String, required: true },
+        frequency: {
+          type: String,
+          enum: [
+            'Once a day',
+            'Twice a day',
+            'Three times a day',
+            'Four times a day',
+          ],
+          default: 'Once a day',
+        },
+        time: {
+          time1: { type: String, required: true },
+          time2: { type: String },
+          time3: { type: String },
+          time4: { type: String },
+        },
+        start_date: { type: Date, required: true },
+        end_date: { type: Date, required: true },
       },
-      time: {
-        time1: { type: String, required: true },
-        time2: { type: String },
-        time3: { type: String },
-        time4: { type: String },
-      },
-      start_date: { type: Date, required: true },
-      end_date: { type: Date, required: true },
-    }, { _id: true }),
+      { _id: true }
+    ),
   },
   user_notifications: {
     type: Map,
     of: new mongoose.Schema({
-      medication_id: {type: String, required: true},
+      medication_id: { type: String, required: true },
       medication_name: { type: String, required: true },
       date: { type: String, required: true },
       time: { type: String, required: true },
       status: {
         type: String,
-        enum: [
-          'Taken',
-          'Not taken',
-          'Skipped'
-        ],
+        enum: ['Taken', 'Not taken', 'Skipped'],
         default: 'Not taken',
-      }
-    })
-  }
+      },
+    }),
+  },
 });
 
 // get user's medications
@@ -82,7 +81,7 @@ userSchema.methods.findUserById = function (userId) {
     }
   }
   return null;
-}
+};
 
 // Utility function to find a medication by ID
 userSchema.methods.findMedicationById = function (medicationId) {
@@ -93,37 +92,42 @@ userSchema.methods.findMedicationById = function (medicationId) {
     }
   }
   return null;
-}; 
+};
 
 // Utility function to find a list of notifications by medication ID
 userSchema.methods.findNotificationsByMedicationId = function (medicationId) {
   var arr = [];
   for (const [key, notification] of this.user_notifications.entries()) {
     if (notification.medication_id === medicationId) {
-      arr.push({key, notification});
+      arr.push({ key, notification });
     }
   }
   return arr;
-}
+};
 
 // Utility function to find a list of notifications by medication ID
-userSchema.methods.findNotificationByNotificationId = function (notificationId) {
+userSchema.methods.findNotificationByNotificationId = function (
+  notificationId
+) {
   for (const [key, notification] of this.user_notifications.entries()) {
     if (notification._id.toString() === notificationId) {
-      return {key, notification};
+      return { key, notification };
     }
   }
   return null;
-}
+};
 
 // Utility function to generate notifications
-userSchema.methods.generateNotifications = function (newMedication, newMedIdString) {
+userSchema.methods.generateNotifications = function (
+  newMedication,
+  newMedIdString
+) {
   const startDate = new Date(newMedication.start_date);
   const endDate = new Date(newMedication.end_date);
   const timeKeys = ['time1', 'time2', 'time3', 'time4'];
   const reminderTimes = timeKeys
-    .map(key => newMedication.time[key])
-    .filter(time => time); // Filter out undefined or null times
+    .map((key) => newMedication.time[key])
+    .filter((time) => time); // Filter out undefined or null times
 
   let currentDate = new Date(startDate);
   while (currentDate <= endDate) {
@@ -146,9 +150,9 @@ userSchema.methods.generateNotifications = function (newMedication, newMedIdStri
 userSchema.methods.deleteNotifications = function (medicationId) {
   const notifications = this.findNotificationsByMedicationId(medicationId);
   notifications.forEach(({ key }) => this.user_notifications.delete(key));
-}
+};
 
-// add new medication
+// add new Medication
 userSchema.methods.addNewMedication = async function (newMedication) {
   try {
     // Ensure user_medication is initialized as a Map
@@ -169,12 +173,12 @@ userSchema.methods.addNewMedication = async function (newMedication) {
       },
       start_date: newMedication.start_date,
       end_date: newMedication.end_date,
-      _id: newMedId
+      _id: newMedId,
     });
 
     // Generate notifications for each reminder time
     this.generateNotifications(newMedication, newMedIdString);
-    
+
     await this.save();
     return { data: newMedIdString, message: 'Medication added successfully' };
   } catch (error) {
@@ -183,7 +187,10 @@ userSchema.methods.addNewMedication = async function (newMedication) {
 };
 
 // edit medication
-userSchema.methods.editMedication = async function (medicationId, updatedMedication) {
+userSchema.methods.editMedication = async function (
+  medicationId,
+  updatedMedication
+) {
   try {
     // Ensure user_medication is initialized as a Map
     this.user_medication = this.user_medication || new Map();
@@ -207,8 +214,11 @@ userSchema.methods.editMedication = async function (medicationId, updatedMedicat
     // Save the changes to the database
     this.user_medication.set(key, medication);
     await this.save();
-    
-    return { message: 'Medication updated successfully', updatedMedication: updatedMedication };
+
+    return {
+      message: 'Medication updated successfully',
+      updatedMedication: updatedMedication,
+    };
   } catch (error) {
     throw error;
   }
@@ -234,12 +244,16 @@ userSchema.methods.deleteMedication = async function (medicationId) {
 };
 
 // edit medication
-userSchema.methods.updateNotificationStatus = async function (notificationId, status) {
+userSchema.methods.updateNotificationStatus = async function (
+  notificationId,
+  status
+) {
   try {
     // Ensure user_medication is initialized as a Map
     this.user_notifications = this.user_notifications || new Map();
 
-    const found_notification = this.findNotificationByNotificationId(notificationId);
+    const found_notification =
+      this.findNotificationByNotificationId(notificationId);
     if (!found_notification) {
       throw new Error('Notification not found');
     }
@@ -251,7 +265,7 @@ userSchema.methods.updateNotificationStatus = async function (notificationId, st
     // Save the changes to the database
     this.user_notifications.set(key, notification);
     await this.save();
-    
+
     return { message: 'Notification updated successfully' };
   } catch (error) {
     throw error;
