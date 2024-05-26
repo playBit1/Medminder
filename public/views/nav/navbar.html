@@ -1,5 +1,6 @@
+<!-- Navbar Template -->
 <nav class="nav-wrapper navbar-custom" id="navDiv">
-    <a href="/dashboard" class="brand-logo blue-text text-lighten-1"><b>MedMinder+</b></a>
+    <a href="/dashboard" class="brand-logo blue-text text-lighten-1"><b>MedMinder+</a>
     <a href="" class="sidenav-trigger" data-target="mobile-links">
         <i class="material-icons custom-menu-icon">menu</i>
     </a>
@@ -7,19 +8,15 @@
         <li><a href='/dashboard'>Dashboard</a></li>
         <li><a href='/medManager'>Med Manager</a></li>
         <li><a href='/symptomChecker'>Symptom Checker</a></li>
+        
         <li class="notification-bell">
             <a class="dropdown-trigger" href="#!" data-target="notifications-dropdown"><i class="material-icons">notifications_none</i></a>
             <ul id="notifications-dropdown" class="dropdown-content">
                 <!-- Notifications will be dynamically injected here -->
             </ul>
         </li>
-        <li class="profile-initials">
-            <a href="/profile">
-            <div class="initials-circle" id="initialsCircle">JD</div>
-            </a>
-          </li>
     </ul>
-</nav>
+    </nav>
 
 <!-- Mobile Sidenav -->
 <ul class="sidenav" id="mobile-links">
@@ -27,3 +24,58 @@
     <li><a href='/medManager'>Med Manager</a></li>
     <li><a href='/symptomChecker'>Symptom Checker</a></li>
 </ul>
+
+<div id="notification-template" style="display:none;">
+    <div class="notification">
+        <div class="notification-header">
+            <i class="material-icons">notifications_none</i>
+            <span>Multivitamin-zinc-stress</span>
+        </div>
+        <div class="notification-body">
+            <span>April 24, 2024 at 8:00 PM</span>
+        </div>
+        <div class="actions">
+            <button class="take-btn">Take</button>
+            <button class="skip-btn">Skip</button>
+        </div>
+    </div>
+    <div class="notification">
+        <div class="notification-header">
+            <i class="material-icons">notifications_none</i>
+            <span>Multivitamin-zinc-stress</span>
+        </div>
+        <div class="notification-body">
+            <span>April 23, 2024 at 8:00 PM</span>
+        </div>
+        <div class="status taken">
+            <i class="material-icons">check_circle</i>
+            <span>Taken</span>
+        </div>
+    </div>
+    <div class="notification">
+        <div class="notification-header">
+            <i class="material-icons">notifications_none</i>
+            <span>Multivitamin-zinc-stress</span>
+        </div>
+        <div class="notification-body">
+            <span>April 22, 2024 at 8:00 PM</span>
+        </div>
+        <div class="status taken">
+            <i class="material-icons">check_circle</i>
+            <span>Taken</span>
+        </div>
+    </div>
+    <div class="notification">
+        <div class="notification-header">
+            <i class="material-icons">notifications_none</i>
+            <span>Multivitamin-zinc-stress</span>
+        </div>
+        <div class="notification-body">
+            <span>April 21, 2024 at 8:00 PM</span>
+        </div>
+        <div class="status skipped">
+            <i class="material-icons">cancel</i>
+            <span>Skipped</span>
+        </div>
+    </div>
+</div>

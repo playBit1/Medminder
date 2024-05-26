@@ -34,9 +34,9 @@ const updateNotificationStatus = async (req, res) => {
 
         const { notificationId, status } = req.body;
 
-        const result = await user.updateNotificationStatus(notificationId, status);
+        await user.updateNotificationStatus(notificationId, status);
 
-        res.json({ statusCode: 200, message: result });
+        res.json({ statusCode: 200, message: 'update notification status success' });
     } catch (err) {
         handleErrorResponse(res, err, 'Error updating notifications:');
     }

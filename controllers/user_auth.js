@@ -17,7 +17,6 @@ const authenticate = async (req, res, next) => {
     }
 
     req.user = user;
-    req.userId = user._id; //// Ensure req.userId is set
     next();
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });
