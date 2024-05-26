@@ -15,10 +15,20 @@ document.addEventListener('DOMContentLoaded', function () {
       var elemsSidenav = document.querySelectorAll('.sidenav');
       M.Sidenav.init(elemsSidenav);
 
+      // Get the notification bell icon element
+      const notificationBellIcon = document.getElementById(
+        'change-notification-icon'
+      );
+
+      notificationBellIcon.addEventListener('click', function () {
+        notificationBellIcon.textContent = 'notifications_none';
+      });
+
       // Load notifications into the dropdown
       var notificationsDropdown = document.getElementById(
         'notifications-dropdown'
       );
+
       if (notificationsDropdown) {
         console.log('Dropdown element found');
 
@@ -37,6 +47,10 @@ document.addEventListener('DOMContentLoaded', function () {
           });
 
           notifications.forEach((notification) => {
+            if (notification.status === 'Not taken') {
+              notificationBellIcon.textContent = 'notifications_active';
+            }
+
             const notificationItem = document.createElement('li');
             notificationItem.innerHTML = `
                             <div class="notification">
