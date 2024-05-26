@@ -7,7 +7,7 @@ const findUserByEmail = async (email) => {
 
 const handleErrorResponse = (res, err, message) => {
     console.error(message, err);
-    res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+    res.status(500).json({ statusCode: 500, message: 'Internal server error' + message });
 };
 
 const getAllMedication = async (req, res) => {
@@ -51,9 +51,9 @@ const addMedication = async (req, res) => {
         };
 
         // Call the addNewMedication method in User.js
-        await user.addNewMedication(newMedication);
+        const result = await user.addNewMedication(newMedication);
 
-        res.status(201).json({ statusCode: 201, data: newMedication, message: 'Medication created successfully' });
+        res.status(200).json({ statusCode: 200, data: result.data, message: 'Medication created successfully' });
     } catch (err) {
         handleErrorResponse(res, err, 'Error adding med:');
     }
