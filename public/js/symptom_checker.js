@@ -1,4 +1,5 @@
 let symptomList = [];
+let previousSubmittedSymptoms = [];
 
 $(document).ready(function () {
   $('input.autocomplete').autocomplete({
@@ -31,9 +32,15 @@ function addSymptomToList(symptom) {
 function handleInputKeyDown(event) {
   if (event.key === 'Enter') {
     const symptomText = event.target.value.trim();
-    if (symptomText) {
+    if (
+      Object.keys(diseaseEmojis).find(
+        (element) => element == symptomText.toLowerCase()
+      )
+    ) {
       createChip(symptomText);
       event.target.value = '';
+    } else {
+      alert('Please select a symptom from the drop-down list!');
     }
   }
 }
@@ -67,35 +74,81 @@ function createChip(symptomText) {
 
 function createDiagnosis(result) {
   const diagnosisContainer = document.getElementById('diagnosis-results');
-  const diagnosisCard = document.createElement('div');
-  diagnosisCard.classList.add('card', 'grey', 'lighten-3', 'z-depth-0');
+  const diagnosisItemsContainer = document.createElement('div');
+  diagnosisItemsContainer.classList.add('diagnosis-items-container');
 
-  const cardContent = document.createElement('div');
-  cardContent.classList.add('card-content', 'row');
+  const diagnosisItem = document.createElement('div');
+  diagnosisItem.classList.add('diagnosis-item');
 
-  const cardTitle = document.createElement('span');
-  cardTitle.classList.add('card-title', 'col', 's6');
-  cardTitle.textContent = 'Diagnosis';
+  const diagnosisItemHead = document.createElement('div');
+  diagnosisItemHead.classList.add('diagnosis-item-head');
 
-  const closeIcon = document.createElement('div');
-  closeIcon.classList.add('right-align', 'col', 's6');
-  const icon = document.createElement('i');
-  icon.classList.add('material-icons');
-  icon.textContent = 'close';
-  closeIcon.appendChild(icon);
+  const diagnosisItemHeading = document.createElement('p');
+  diagnosisItemHeading.classList.add('diagnosis-item-heading');
+  diagnosisItemHeading.textContent = 'Diagnosis';
 
-  const diagnosisText = document.createElement('p');
-  diagnosisText.classList.add('col', 's12');
-  diagnosisText.textContent = result['disease'];
+  const closeIcon = document.createElement('i');
+  closeIcon.classList.add('material-icons', 'diagnosis-item-button');
+  closeIcon.textContent = 'close';
 
-  cardContent.appendChild(cardTitle);
-  cardContent.appendChild(closeIcon);
-  cardContent.appendChild(diagnosisText);
-  diagnosisCard.appendChild(cardContent);
-  diagnosisContainer.appendChild(diagnosisCard);
+  closeIcon.addEventListener('click', () => {
+    diagnosisItem.remove();
+  });
+
+  diagnosisItemHead.appendChild(diagnosisItemHeading);
+  diagnosisItemHead.appendChild(closeIcon);
+
+  const diagnosisItemBodyDisease = document.createElement('p');
+  diagnosisItemBodyDisease.classList.add('diagnosis-item-body-disease');
+  const boldDisease = document.createElement('strong');
+  boldDisease.textContent = result['disease'];
+  diagnosisItemBodyDisease.textContent = 'You might have: ';
+  diagnosisItemBodyDisease.appendChild(boldDisease);
+
+  const diagnosisItemBodySymptoms = document.createElement('p');
+  diagnosisItemBodySymptoms.classList.add('diagnosis-item-body-symptoms');
+
+  const symptomsWithSpaces = symptomList.map((symptom) =>
+    symptom.replace(/_/g, ' ')
+  );
+  diagnosisItemBodySymptoms.textContent = `Entered Symptoms: ${symptomsWithSpaces.join(
+    ', '
+  )}`;
+
+  diagnosisItem.appendChild(diagnosisItemHead);
+  diagnosisItem.appendChild(diagnosisItemBodyDisease);
+  diagnosisItem.appendChild(diagnosisItemBodySymptoms);
+
+  diagnosisItemsContainer.prepend(diagnosisItem);
+
+  if (diagnosisItemsContainer.children.length > 3) {
+    diagnosisContainer.replaceChild(
+      diagnosisItemsContainer,
+      diagnosisContainer.firstChild
+    );
+  } else {
+    diagnosisContainer.prepend(diagnosisItemsContainer);
+  }
 }
 
 function submitSymptoms() {
+  if (symptomList.length === 0) {
+    alert('Please enter at least one symptom.');
+    return;
+  }
+
+  if (
+    previousSubmittedSymptoms.length === symptomList.length &&
+    previousSubmittedSymptoms.every(
+      (value, index) => value === symptomList[index]
+    )
+  ) {
+    alert(
+      'You have already submitted these symptoms. Please enter new symptoms or modify the existing ones.'
+    );
+    return;
+  }
+
   const data = { symptoms: symptomList };
 
   $.ajax({
@@ -106,6 +159,7 @@ function submitSymptoms() {
     success: function (result) {
       console.log('Success:', result);
       createDiagnosis(result);
+      previousSubmittedSymptoms = [...symptomList]; // Update the previousSubmittedSymptoms array
     },
     error: function (error) {
       console.error('Error:', error);
