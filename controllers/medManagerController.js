@@ -6,7 +6,6 @@ const findUserByEmail = async (email) => {
 };
 
 const handleErrorResponse = (res, err, message) => {
-    console.error(message, err);
     res.status(500).json({ statusCode: 500, message: 'Internal server error' + message });
 };
 
@@ -145,10 +144,8 @@ const sendEmail = (req, res) => {
 
     transporter.sendMail(mailOptions, function(error, info){
         if (error) {
-            console.log('Error occurred: ' + error.message);
             res.status(500).json({ statusCode: 500, message: 'Failed to send email', error: error.message });
         } else {
-            console.log('Email sent: ' + info.response);
             res.status(200).json({ statusCode: 200, message: 'Email sent successfully' });
         }
     });

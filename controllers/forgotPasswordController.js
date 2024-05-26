@@ -13,8 +13,8 @@ const findUserById = async (id) => {
 };
 
 const handleErrorResponse = (res, err, message) => {
-  console.error(message, err);
-  res.status(500).json({ statusCode: 500, message: 'Internal server error' });
+  console.log(err);
+  res.status(500).json({ statusCode: 500, message: 'Internal server error' + message});
 };
 
 const sendEmail = async function (req, res) {
@@ -53,10 +53,8 @@ const sendEmail = async function (req, res) {
 
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
-        console.log('Error occurred: ' + error.message);
         res.status(500).json({ statusCode: 500, message: 'Failed to send email', error: error.message });
       } else {
-        console.log('Email sent: ' + info.response);
         res.status(200).json({ statusCode: 200, message: 'Email sent successfully' });
       }
     });
@@ -100,6 +98,8 @@ const resetPasswordPost = async function(req, res) {
     if (!user) {
       return res.status(404).json({ statusCode: 404, message: 'User not found' });
     }
+
+    console.log("user: " + user.user_password);
 
     const secret = JWT_SECRET + user.user_password;
     const verify = jwt.verify(token, secret);
