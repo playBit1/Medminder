@@ -3,6 +3,8 @@ const path = require('path');
 const app = express();
 const server = require('http').createServer(app);
 const cookieParser = require('cookie-parser');
+const socketIo = require('socket.io');
+const io = socketIo(server);
 const { runDB } = require('./dbConnection');
 const socketNotifications = require('./sockets/notifications');
 
@@ -28,21 +30,15 @@ const notificationsRouter = require('./routes/notifications');
 const profileRouter = require('./routes/profile');
 
 app.use('/medManager', medManagerRoutes);
-
 app.use('/symptomChecker', symptomCheckerRoutes);
-
 app.use('/auth', authRoutes);
-
 app.use('/user', userRoutes);
-
-app.use ('/dashboard', dashboardRoutes);
-
-app.use ('/notify', notificationsRouter);
-
-app.use ('/profile', profileRouter);
+app.use('/dashboard', dashboardRoutes);
+app.use('/notify', notificationsRouter);
+app.use('/profile', profileRouter);
 
 // Initialize socket.io
-socketNotifications(server);
+socketNotifications(io);
 
 server.listen(3000, () => {
   runDB();
