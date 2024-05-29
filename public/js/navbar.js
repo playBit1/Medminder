@@ -20,19 +20,30 @@ document.addEventListener('DOMContentLoaded', function () {
         'change-notification-icon'
       );
 
-      notificationBellIcon.addEventListener('click', function () {
-        notificationBellIcon.textContent = 'notifications_none';
-      });
+      let notificationIconState = localStorage.getItem('notificationIconState');
+      let notificationInfoState = localStorage.getItem('notificationInfoState');
+
+      //console.log(notificationIconState, 'hallo');
+
+      //console.log(notificationInfoState);
 
       // Load notifications into the dropdown
       var notificationsDropdown = document.getElementById(
         'notifications-dropdown'
       );
 
-      if (notificationsDropdown) {
-        console.log('Dropdown element found');
+      if (notificationIconState == 'notifications_active') {
+        notificationBellIcon.textContent = notificationIconState;
+      } else {
+        notificationBellIcon.textContent = 'notifications_none';
+      }
 
-        // Establish socket connection
+      notificationBellIcon.addEventListener('click', function () {
+        notificationBellIcon.textContent = 'notifications_none';
+        localStorage.setItem('notificationIconState', 'notifications_none');
+      });
+
+      if (notificationsDropdown) {
         var socket = io();
 
         // Listen for notifications from the server
@@ -49,49 +60,100 @@ document.addEventListener('DOMContentLoaded', function () {
           notifications.forEach((notification) => {
             if (notification.status === 'Not taken') {
               notificationBellIcon.textContent = 'notifications_active';
+              localStorage.setItem(
+                'notificationIconState',
+                'notifications_active'
+              );
             }
 
             const notificationItem = document.createElement('li');
-            notificationItem.innerHTML = `
-                            <div class="notification">
-                                <div class="notification-header">
-                                    <i class="material-icons">notifications_none</i>
-                                    <span>${
-                                      notification.title ||
-                                      notification.medication_name
-                                    }</span>
-                                </div>
-                                <div class="notification-body">
-                                    <span>${notification.date} at ${
-              notification.time
-            }</span>
-                                </div>
-                                <div class="status ${notification.status
-                                  .toLowerCase()
-                                  .replace(' ', '-')}">
-                                    <i class="material-icons">
-                                        ${
-                                          notification.status === 'Taken'
-                                            ? 'check_circle'
-                                            : notification.status === 'Skipped'
-                                            ? 'cancel'
-                                            : 'notifications_none'
-                                        }
-                                    </i>
-                                    <span>${notification.status}</span>
-                                </div>
-                                ${
-                                  notification.status === 'Not taken'
-                                    ? `
-                                <div class="notification-actions">
-                                    <button onclick="handleMedicationAction('Taken', '${notification._id}')">Taken</button>
-                                    <button onclick="handleMedicationAction('Skipped', '${notification._id}')">Skipped</button>
-                                </div>
-                                `
-                                    : ''
-                                }
-                            </div>
+            notificationItem.innerHTML = `<div>
+          <div
+            style="
+              width: 320px;
+              border-bottom: 1px solid rgba(143, 143, 143, 0.753);
+              padding: 10px;
+              margin: 0px 0px;
+              color: black;
+            ">
+            <div style="display: flex; align-items: center">
+              <div>
+                <i
+                  class="material-icons"
+                  style="
+                    opacity: 0.7;
+                    padding-right: 10px;
+                    margin-bottom: 20px;
+                    font-size: 30px;
+                  "
+                  >notifications_none</i
+                >
+                <i></i>
+              </div>
+
+              <div style="all: unset">
+                <div style="padding-left: 15px; padding-bottom: 10px">
+                  <p
+                    style="
+                      height: 35px;
+                      padding: 0px;
+                      margin: 0px;
+                      font-size: 19px;
+                      font-weight: 500;
+                    ">
+                    ${notification.medication_name}
+                  </p>
+
+                  <p
+                    style="
+                      height: 10px;
+                      opacity: 0.8;
+                      font-size: 16px;
+                      margin-top: 0px;
+                      margin-bottom: 0px;
+                      padding-bottom: 30px;
+                    ">
+                    ${notification.date} at ${notification.time}
+                  </p>
+                </div>
+
+                <div>
+                  <a
+                    class="blue lighten-1 white-text waves-effect waves-light btn-small z-depth-1"
+                    style="
+                      height: max-content;
+                      border-radius: 20px;
+                      padding: 0px 25px;
+                    "
+                    onclick="handleMedicationAction('Taken', '${notification._id}')">
+                    Take</a
+                  >
+                  <a
+                    class="red lighten-1 white-text waves-effect waves-light btn-small z-depth-1"
+                    style="
+                      height: max-content;
+                      border-radius: 20px;
+                      padding: 0px 25px;
+                    "
+                    onclick="handleMedicationAction('Skipped', '${notification._id}')">
+                    Skip</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            style="
+              width: 320px;
+              background: white;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+              padding: 0px;
+              margin: 0px 0px 0px 0px;
+            "></div>
+        </div>
                         `;
+
+            localStorage.setItem('notificationInfoState', notificationItem);
             notificationsDropdown.insertBefore(
               notificationItem,
               notificationsDropdown.firstChild

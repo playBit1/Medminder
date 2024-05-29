@@ -13,7 +13,7 @@ const socketNotifications = require('./sockets/notifications');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({}));
+app.use(cors());
 
 // Static files
 app.use(express.static(path.join(__dirname, 'public')));
@@ -33,13 +33,9 @@ const notificationsRouter = require('./routes/notifications');
 const profileRouter = require('./routes/profile');
 
 app.use('/medManager', medManagerRoutes);
-
 app.use('/symptomChecker', symptomCheckerRoutes);
-
 app.use('/auth', authRoutes);
-
 app.use('/user', userRoutes);
-
 app.use('/dashboard', dashboardRoutes);
 app.use('/notify', notificationsRouter);
 app.use('/profile', profileRouter);

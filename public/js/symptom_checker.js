@@ -45,6 +45,7 @@ function handleInputKeyDown(event) {
   }
 }
 
+//creation of the symptom chips html elements
 function createChip(symptomText) {
   const chipContainer = document.getElementById('symptoms');
   const lowercaseSymptom = symptomText.toLowerCase().replace(/ /g, '_');
@@ -72,6 +73,7 @@ function createChip(symptomText) {
   }
 }
 
+//creation of the diagnosis box html elements
 function createDiagnosis(result) {
   const diagnosisContainer = document.getElementById('diagnosis-results');
   const diagnosisItemsContainer = document.createElement('div');

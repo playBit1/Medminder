@@ -2,14 +2,8 @@ const User = require('../models/User');
 
 module.exports = (io) => {
   io.on('connection', (socket) => {
-    console.log('New client connected');
-
     // A set to keep track of sent notifications
     const sentNotifications = new Set();
-
-    socket.on('disconnect', () => {
-      console.log('Client disconnected');
-    });
 
     // Emit notifications due in the next 5 minutes
     const checkNotifications = async () => {
@@ -38,7 +32,6 @@ module.exports = (io) => {
 
             if (upcomingNotifications.length > 0) {
               socket.emit('notifications', upcomingNotifications);
-              console.log('Notifications emitted:', upcomingNotifications); // Log emitted notifications
 
               // Add the notifications to the set of sent notifications
               upcomingNotifications.forEach((notification) => {
