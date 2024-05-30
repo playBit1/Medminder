@@ -1,9 +1,9 @@
-$(document).ready(function() {
+$(document).ready(function () {
   // Initialize the modal
   $('.modal').modal();
 
   // Fetch User data and populate the profile info
-  $.get('/profile/details', function(data) {
+  $.get('/profile/details', function (data) {
     $('#display_first_name').text(data.user_first_name);
     $('#display_last_name').text(data.user_last_name);
     $('#display_email').text(data.user_email);
@@ -21,23 +21,23 @@ $(document).ready(function() {
     if (data.user_email) {
       $('label[for="user_email"]').addClass('active');
     }
-  }).fail(function(error) {
+  }).fail(function (error) {
     console.error('Error fetching user data:', error);
   });
 
   // Open modal
-  $('#openModal').on('click', function() {
+  $('#openModal').on('click', function () {
     $('#profileModal').modal('open');
   });
 
   // Handle form submission
-  $('#profileForm').on('submit', function(event) {
+  $('#profileForm').on('submit', function (event) {
     event.preventDefault();
 
     const data = {
       user_first_name: $('#user_first_name').val(),
       user_last_name: $('#user_last_name').val(),
-      user_email: $('#user_email').val()
+      user_email: $('#user_email').val(),
     };
 
     $.ajax({
@@ -45,7 +45,7 @@ $(document).ready(function() {
       method: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(data),
-      success: function(result) {
+      success: function (result) {
         alert(result.message);
         // Update the displayed profile info
         $('#display_first_name').text(data.user_first_name);
@@ -60,9 +60,9 @@ $(document).ready(function() {
         // Close the modal
         $('#profileModal').modal('close');
       },
-      error: function(error) {
+      error: function (error) {
         console.error('Error updating profile:', error);
-      }
+      },
     });
   });
 });

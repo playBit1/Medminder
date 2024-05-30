@@ -289,7 +289,7 @@ nav ul a {
 }
 nav ul a:hover {
   background-color: transparent;
-  color: rgb(35, 166, 240); 
+  color: rgb(35, 166, 240);
   transition: all 0.2s ease-in;
 }
 .notification-bell a i {

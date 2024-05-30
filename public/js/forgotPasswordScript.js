@@ -1,12 +1,12 @@
-function forgotPasswordForm(){
+function forgotPasswordForm() {
   let email = $('#email').val();
   postForgotPassword(email);
 }
 
 function postForgotPassword(email) {
-  let data={};
+  let data = {};
   data.email = email;
-  alert("The form is submitted. Please wait for a few seconds.");
+  alert('The form is submitted. Please wait for a few seconds.');
   $.ajax({
     url: '/forgotPassword/sendEmail',
     data: data,
@@ -16,7 +16,7 @@ function postForgotPassword(email) {
       window.location.reload();
     },
     error: (xhr, status, error) => {
-      let errorMessage = "Error submitting: ";
+      let errorMessage = 'Error submitting: ';
       try {
         let response = JSON.parse(xhr.responseText);
         if (response.message) {
@@ -28,12 +28,12 @@ function postForgotPassword(email) {
         errorMessage += xhr.responseText;
       }
       alert(errorMessage);
-    }
+    },
   });
 }
 
-$(document).ready(function(){    
-  $('#emailSubmit').click(()=>{
-    forgotPasswordForm();      
+$(document).ready(function () {
+  $('#emailSubmit').click(() => {
+    forgotPasswordForm();
   });
 });

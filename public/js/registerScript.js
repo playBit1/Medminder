@@ -22,18 +22,19 @@ function registerForm() {
     return;
   }
 
-  if (formData.user_email == "" || 
-      formData.user_password == "" || 
-      formData.user_first_name == "" ||
-      formData.user_last_name == "" || 
-      formData.user_gender == ""
+  if (
+    formData.user_email == '' ||
+    formData.user_password == '' ||
+    formData.user_first_name == '' ||
+    formData.user_last_name == '' ||
+    formData.user_gender == ''
   ) {
     alert('Please fill in all required fields.');
     return;
   }
 
   postRegister(formData);
-};
+}
 
 function validateEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -53,7 +54,7 @@ function postRegister(user) {
       window.location.href = '/user/login';
     },
     error: (xhr, status, error) => {
-      let errorMessage = "Error registering: ";
+      let errorMessage = 'Error registering: ';
       try {
         let response = JSON.parse(xhr.responseText);
         if (response.message) {
@@ -65,11 +66,11 @@ function postRegister(user) {
         errorMessage += xhr.responseText;
       }
       alert(errorMessage);
-    }
+    },
   });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   $('#submitRegister').click(() => {
     registerForm();
   });

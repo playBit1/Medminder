@@ -161,10 +161,10 @@ function submitSymptoms() {
     success: function (result) {
       console.log('Success:', result);
       createDiagnosis(result);
-      previousSubmittedSymptoms = [...symptomList]; // Update the previousSubmittedSymptoms array
+      previousSubmittedSymptoms = [...symptomList]; // Update the previousSubmittedSymptoms array to reject duplicate submits
     },
     error: function (error) {
-      console.error('Error:', error);
+      alert('Symptom Checker services are down. Please try again later!');
     },
   });
 }

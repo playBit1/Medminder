@@ -8,12 +8,12 @@ document.getElementById('logoutButton').addEventListener('click', async () => {
     });
 
     if (response.ok) {
-      alert("Logout successfully.");
+      alert('Logout successfully.');
       window.location.href = '/';
     } else {
       alert('Logout failed');
     }
   } else {
-    alert("Logout canceled.");
+    alert('Logout canceled.');
   }
 });

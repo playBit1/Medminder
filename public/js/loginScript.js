@@ -1,15 +1,14 @@
-
 function loginForm() {
   let formData = {};
-  
+
   formData.user_email = $('#email').val();
   formData.user_password = $('#password').val();
 
-  if (formData.user_email == "" || formData.user_password == "") {
+  if (formData.user_email == '' || formData.user_password == '') {
     alert('Please fill in all required fields.');
     return;
   }
-      
+
   postLogin(formData);
 }
 
@@ -24,13 +23,12 @@ function postLogin(user) {
     },
     error: (xhr, status, error) => {
       alert('Error logging in: User ' + error);
-    }
+    },
   });
 }
 
-$(document).ready(function(){
-  $('#loginSubmit').click(()=>{
+$(document).ready(function () {
+  $('#loginSubmit').click(() => {
     loginForm();
   });
 });
-

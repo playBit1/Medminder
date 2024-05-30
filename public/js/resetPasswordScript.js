@@ -1,7 +1,7 @@
 function resetPasswordForm() {
   let newPassword = $('#newPassword').val();
   let confirmNewPassword = $('#confirmNewPassword').val();
-  
+
   if (newPassword.length < 6) {
     alert('Password should be at least 6 characters long.');
     return;
@@ -13,7 +13,7 @@ function resetPasswordForm() {
     return;
   }
 
-  let values = window.location.pathname.split("/");
+  let values = window.location.pathname.split('/');
   let token = values[values.length - 2];
   let id = values[values.length - 1];
 
@@ -28,11 +28,13 @@ function postResetPassword(token, id, newPassword) {
     type: 'POST',
     contentType: 'application/json',
     success: (result) => {
-      alert('Password reset successfully. You will be redirected to the login page.');
-      window.location.href = "/user/login";
+      alert(
+        'Password reset successfully. You will be redirected to the login page.'
+      );
+      window.location.href = '/user/login';
     },
     error: (xhr, status, error) => {
-      let errorMessage = "Error submitting: ";
+      let errorMessage = 'Error submitting: ';
       try {
         let response = JSON.parse(xhr.responseText);
         if (response.message) {
@@ -44,11 +46,11 @@ function postResetPassword(token, id, newPassword) {
         errorMessage += xhr.responseText;
       }
       alert(errorMessage);
-    }
+    },
   });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   $('#resetSubmit').click(() => {
     resetPasswordForm();
   });
